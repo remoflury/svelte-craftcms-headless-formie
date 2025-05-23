@@ -1,58 +1,113 @@
-# Svelte library
+# Svelte Forms for Craft CMS & Formie
 
-Everything you need to build a Svelte library, powered by [`sv`](https://npmjs.com/package/sv).
+This is a repo which is useful for [Craft CMS](https://craftcms.com/) in its headless configuration with using the [plugin formie](https://verbb.io/craft-plugins/formie/features).
+It allows you to simply install the dependencies, style your components without further configuration.
 
-Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+## Requirements
 
-## Creating a project
+- Craft CMS > 5.0
+- Formie > 3.0
+- Craft CMS's GraphQl Schema enabled
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Installation & Setup
 
-```bash
-# create a new project in the current directory
-npx sv create
+In your frontend code run
 
-# create a new project in my-app
-npx sv create my-app
+```sh
+npm install tbd
 ```
 
-## Developing
+Enable Views for the formie forms and creation of submission in the graphql schema.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Usage
 
-```bash
-npm run dev
+In your svelte file, import the component. And add the form handle and the public CMS API url. The Form handle can be passed in dynamically, as the form will be fetched client side.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```svelte
+<script lang="ts">
+	import { PUBLIC_CMS_API } from '$env/static/public';
+	import FormieForm from 'tbd';
+</script>
+
+<FormieForm handle="your-form-handle" publicCmsApi={PUBLIC_CMS_API} />
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+### snippets
 
-## Building
+You can pass in multiple snippets:
 
-To build your library:
+- submitButton (required): Pass in a custom submit button (type submit)
+- skeletonSnippet (optional): Will be rendered during the initial client side fetch. It is meant as a placeholder for skeleton loaders.
+- errorSnippet (optional): will be rendered if the initial load of the form will throw an error.
+- afterSubmitSnippet (optional): allows to render a custom submission message after a submission, disregarding wether it is an error or success.
 
-```bash
-npm run package
+### Props
+
+| Prop                 | Description                                                                            | type               | default                  |
+| -------------------- | -------------------------------------------------------------------------------------- | ------------------ | ------------------------ | --------- |
+| `handle`             | the form handle                                                                        | string (required)  | -                        |
+| `submitButton`       | your custom submitButton (type="submit")                                               | Snippet (required) |  -                       |
+| `publicCmsApiKey`    | the cms api url, where the submission has to be sent to                                | string (required)  | -                        |
+| `recaptchaKey`       | if recaptcha is setup in formie, pass in the recaptcha key                             | string, undefined  | undefined                |
+| `isLoading`          | allows you to bind to a loading state during the submission                            | boolean            | false                    |
+| `skeletonSnippet`    | renders a skeleton loader snippet                                                      | Snippet, undefined | undefined                |
+| `errorSnippet`       | renders an error snippet if an error is caught during inititial render                 | Snippet, undefined | undefined                |
+| `afterSubmitSnippet` | renders a snippet after the submission                                                 | Snippet, undefined | undefined                |
+| `onsuccessfulsubmit` | callback on a successful submit, gives back a message as string (defined in formie)    | (message: string   | null) => void, undefined | undefined |
+| `onerror`            | callback on an unsuccessful submit, gives back a message as string (defined in formie) | (message: string   | null) => void, undefined | undefined |
+
+## Example Usage
+
+```svelte
+<script lang="ts">
+	import { PUBLIC_CMS_API } from '$env/static/public';
+	import { FormieForm } from '$lib/index.js';
+
+	let { data } = $props();
+	const form = $derived(data.data.form);
+	let isLoading = $state(false);
+</script>
+
+<FormieForm
+	handle={form[0].handle}
+	publicCmsApi={PUBLIC_CMS_API}
+	recaptchaKey={PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY}
+	onsuccessfulsubmit={(message) => console.log(message)}
+	onerror={(message) => console.log(message)}
+	bind:isLoading
+>
+	{#snippet skeletonSnippet()}
+		this is a skeleton fallback
+	{/snippet}
+
+	{#snippet submitButton()}
+		<button>Submiiit</button>
+	{/snippet}
+
+	{#snippet afterSubmitSnippet()}
+		<p>This will be shown after submission</p>
+	{/snippet}
+
+	{#snippet errorSnippet()}
+		<p>This is an error message</p>
+	{/snippet}
+</FormieForm>
 ```
 
-To create a production version of your showcase app:
+## Limitations
 
-```bash
-npm run build
-```
+Currently, only the following formie Fields are supported:
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
-```
+- Address
+- Agree
+- Checkboxes
+- Date / Time
+- Dropdown
+- Email Address
+- Heading
+- Multi-line Text
+- Name
+- Number
+- Phone Number
+- Radio Buttons
+- Single-line Text
