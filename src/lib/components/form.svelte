@@ -4,6 +4,7 @@
 	import { onMount, type Snippet } from 'svelte';
 	import { getFormMutation, getMutationVariables } from '$lib/utils/mutationUtils.js';
 	import { FormQuery } from '$lib/queries/FormQuery.js';
+	import { recaptchaHintSnippet } from './recaptchaHintSnippet.svelte';
 	import Field from './field.svelte';
 
 	type Props = {
@@ -15,6 +16,7 @@
 		skeletonSnippet?: Snippet;
 		errorSnippet?: Snippet;
 		afterSubmitSnippet?: Snippet; // component, which can be shown after submission
+		recaptchaHint?: Snippet;
 		recaptchaKey?: string;
 		publicCmsApi: string;
 	};
@@ -26,6 +28,7 @@
 		skeletonSnippet,
 		isLoading = $bindable(false),
 		afterSubmitSnippet,
+		recaptchaHint = recaptchaHintSnippet,
 		submitButton,
 		recaptchaKey,
 		publicCmsApi
@@ -150,16 +153,17 @@
 		bind:this={form}
 		id={formData.form.handle}
 		onsubmit={async (e) => await onSubmit(e, formData)}
+		data-formie-form
 	>
 		{#each formData.form.pages as page, i (page.id)}
-			<div id={page.id} class:hidden={i !== pageIndex || successMessage}>
+			<div id={page.id} class:hidden={i !== pageIndex || successMessage} data-form-page={page.id}>
 				{#if page.rows.length > 0}
 					<!-- eslint-disable-next-line -->
 					{#each page.rows as row (crypto.randomUUID())}
 						<!-- eslint-disable-next-line -->
 						{#each row.rowFields as field (crypto.randomUUID())}
 							{#if checkFieldConditions(field.conditions, formFields)}
-								<div class="field relative grow {row.rowFields.length > 1 && 'basis-[40%]'}">
+								<div data-form-field>
 									<Field {field} {updateFormFields} />
 								</div>
 							{/if}
@@ -176,13 +180,9 @@
 			{@render afterSubmitSnippet()}
 		{/if}
 
-		<small class="mt-4 block w-full text-xs">
-			This site is protected by reCAPTCHA and the Google
-			<a class="text-xs underline" href="https://policies.google.com/privacy">Privacy Policy</a>
-			and
-			<a class="text-xs underline" href="https://policies.google.com/terms">Terms of Service</a>
-			apply.
-		</small>
+		{#if recaptchaKey}
+			{@render recaptchaHint?.()}
+		{/if}
 	</form>
 {:catch}
 	{#if errorSnippet}

@@ -43,18 +43,19 @@ You can pass in multiple snippets:
 
 ### Props
 
-| Prop                 | Description                                                                            | type                                             | default   |
-| -------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------ | --------- |
-| `handle`             | the form handle                                                                        | `string` (required)                              | -         |
-| `submitButton`       | your custom submitButton (type="submit")                                               | `Snippet` (required)                             |  -        |
-| `publicCmsApiKey`    | the cms api url, where the submission has to be sent to                                | `string` (required)                              | -         |
-| `recaptchaKey`       | if recaptcha is setup in formie, pass in the recaptcha key                             | `string \| undefined`                            | undefined |
-| `isLoading`          | allows you to bind to a loading state during the submission                            | `boolean \| undefined`                           | false     |
-| `skeletonSnippet`    | renders a skeleton loader snippet                                                      | `Snippet \| undefined`                           | undefined |
-| `errorSnippet`       | renders an error snippet if an error is caught during inititial render                 | `Snippet \| undefined`                           | undefined |
-| `afterSubmitSnippet` | renders a snippet after the submission                                                 | `Snippet \| undefined `                          | undefined |
-| `onsuccessfulsubmit` | callback on a successful submit, gives back a message as string (defined in formie)    | `(message: string \| null) => void \| undefined` | undefined |
-| `onerror`            | callback on an unsuccessful submit, gives back a message as string (defined in formie) | `(message: string \| null) => void \| undefined` | undefined |
+| Prop                 | Description                                                                                   | type                                             | default                     |
+| -------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------ | --------------------------- |
+| `handle`             | the form handle                                                                               | `string` (required)                              | -                           |
+| `submitButton`       | your custom submitButton (type="submit")                                                      | `Snippet` (required)                             |  -                          |
+| `publicCmsApiKey`    | the cms api url, where the submission has to be sent to                                       | `string` (required)                              | -                           |
+| `recaptchaKey`       | if recaptcha is setup in formie, pass in the recaptcha key                                    | `string \| undefined`                            | undefined                   |
+| `isLoading`          | allows you to bind to a loading state during the submission                                   | `boolean \| undefined`                           | false                       |
+| `skeletonSnippet`    | renders a skeleton loader snippet                                                             | `Snippet \| undefined`                           | undefined                   |
+| `errorSnippet`       | renders an error snippet if an error is caught during inititial render                        | `Snippet \| undefined`                           | undefined                   |
+| `afterSubmitSnippet` | renders a snippet after the submission                                                        | `Snippet \| undefined `                          | undefined                   |
+| `recaptchaHint`      | renders a snippet as a hint for recaptcha. Will only be shown, if a recaptchaKey is provieded | `Snippet \| undefined `                          | recaptchaHintSnippet.svelte |
+| `onsuccessfulsubmit` | callback on a successful submit, gives back a message as string (defined in formie)           | `(message: string \| null) => void \| undefined` | undefined                   |
+| `onerror`            | callback on an unsuccessful submit, gives back a message as string (defined in formie)        | `(message: string \| null) => void \| undefined` | undefined                   |
 
 ## Example Usage
 
