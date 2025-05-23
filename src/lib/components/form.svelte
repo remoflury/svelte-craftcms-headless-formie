@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { AfterSubmitState } from '$lib/types/FormTypes.js';
-	import { addRecaptcha, checkFieldConditions } from '$lib/utils/formUtils.js';
+	import type { AfterSubmitState } from '$lib/types/ComponentTypes.js';
+	import { addRecaptcha, areInputFieldsValid, checkFieldConditions } from '$lib/utils/formUtils.js';
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
 	import { onMount, type Snippet } from 'svelte';
 	import { getFormMutation, getMutationVariables } from '$lib/utils/mutationUtils.js';
@@ -46,13 +46,10 @@
 	let formFields: { handle: string; value: string }[] = $state([]);
 	let pageIndex = $state(0);
 	let pages: { id: string }[] = $state([]);
-	let successMessage: string | null = $state(null);
-	let isSuccessful = $state(false);
-	let errorMessage: string | null = $state(null);
 	let form: HTMLFormElement | undefined = $state();
 	let recaptcha: ReCaptchaInstance | undefined = $state();
 
-	const query = FormQuery?.loc?.source?.body;
+	const query: string = FormQuery?.loc?.source?.body;
 
 	let options = $derived({
 		method: 'POST',
@@ -101,22 +98,7 @@
 		isLoading = true;
 		// return early if recaptcha instance is not present and there is a recaptcha key
 		if (!recaptcha && recaptchaKey) return;
-		const page = document.getElementById(pages[pageIndex].id) as HTMLFormElement;
-		const formFields = page.querySelectorAll('input, select, textarea');
-		let isValid = true;
-		formFields.forEach((field) => {
-			if (!(field as HTMLInputElement).checkValidity()) {
-				(field as HTMLInputElement).reportValidity();
-				isValid = false;
-			}
-		});
-		if (!isValid) {
-			return;
-		}
-		isLoading = true;
-
-		successMessage = null;
-		errorMessage = null;
+		if (!areInputFieldsValid(pages, pageIndex)) return;
 
 		addRecaptcha(recaptcha, formData, recaptchaKey);
 
@@ -136,14 +118,15 @@
 		const json = await response.json();
 
 		if (json.data && !json.errors) {
-			isSuccessful = true;
-			successMessage = formData?.form?.settings?.submitActionMessageHtml;
-			afterSubmitState = { message: successMessage, isSuccess: true };
-			onsuccessfulsubmit?.(successMessage);
+			afterSubmitState = {
+				message: formData?.form?.settings?.submitActionMessageHtml,
+				isSuccess: true
+			};
+			onsuccessfulsubmit?.(afterSubmitState.message);
 		} else {
-			errorMessage = json.errors[0].message;
-			afterSubmitState = { message: errorMessage, isSuccess: false };
-			onerror?.(errorMessage);
+			console.error(json.errors);
+			afterSubmitState = { message: formData?.form?.settings?.errorMessageHtml, isSuccess: false };
+			onerror?.(afterSubmitState.message);
 		}
 		isLoading = false;
 	});
@@ -166,7 +149,7 @@
 		data-formie-form
 	>
 		{#each formData.form.pages as page, i (page.id)}
-			<div id={page.id} class:hidden={i !== pageIndex || successMessage} data-formie-page={page.id}>
+			<div id={page.id} class:hidden={i !== pageIndex} data-formie-page={page.id}>
 				{#if page.rows.length > 0}
 					<!-- eslint-disable-next-line -->
 					{#each page.rows as row (crypto.randomUUID())}
@@ -182,7 +165,7 @@
 				{/if}
 			</div>
 		{/each}
-		{#if !isSuccessful}
+		{#if !afterSubmitState?.isSuccess}
 			{@render submitButton()}
 		{/if}
 
@@ -199,3 +182,9 @@
 		{@render errorSnippet()}
 	{/if}
 {/await}
+
+<style>
+	.hidden {
+		display: none;
+	}
+</style>

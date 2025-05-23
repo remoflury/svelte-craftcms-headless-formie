@@ -109,3 +109,22 @@ export const addRecaptcha = async (
 		value: token
 	});
 };
+
+/**
+ * @function areInputFieldsValid
+ * @description checks the validity of all form fields of the current form page
+ * @returns boolean
+ */
+export const areInputFieldsValid = (pages: { id: string }[], pageIndex: number): boolean => {
+	const page = document.getElementById(pages[pageIndex].id) as HTMLFormElement;
+	const formFields = page.querySelectorAll('input, select, textarea');
+	let isValid = true;
+	formFields.forEach((field) => {
+		if (!(field as HTMLInputElement).checkValidity()) {
+			(field as HTMLInputElement).reportValidity();
+			isValid = false;
+		}
+	});
+
+	return isValid;
+};

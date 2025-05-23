@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { PUBLIC_CMS_API, PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY } from '$env/static/public';
+	import type { AfterSubmitState } from '$lib/types/ComponentTypes.js';
+	import { PUBLIC_CMS_API } from '$env/static/public';
 	import { FormieForm } from '$lib/index.js';
-	import type { AfterSubmitState } from '$lib/types/FormTypes.js';
 
 	let { data } = $props();
 	const form = $derived(data.data.form);
@@ -15,7 +15,6 @@
 	<FormieForm
 		handle={form[0].handle}
 		publicCmsApi={PUBLIC_CMS_API}
-		recaptchaKey={PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY}
 		onsuccessfulsubmit={(message) => console.log(message)}
 		onerror={(message) => console.log(message)}
 		bind:isLoading
