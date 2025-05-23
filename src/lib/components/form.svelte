@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { PUBLIC_CMS_API } from '$env/static/public';
 	import { addRecaptcha, checkFieldConditions } from '$lib/utils/formUtils.js';
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
 	import { onMount, type Snippet } from 'svelte';
@@ -19,6 +18,7 @@
 		skeletonSnippet?: Snippet;
 		errorSnippet?: Snippet;
 		recaptchaKey?: string;
+		publicCmsApi: string;
 	};
 	let {
 		handle,
@@ -27,7 +27,8 @@
 		skeletonSnippet,
 		isLoading = $bindable(false),
 		submitButton,
-		recaptchaKey
+		recaptchaKey,
+		publicCmsApi
 	}: Props = $props();
 
 	const variables = $derived({
@@ -63,7 +64,7 @@
 	};
 
 	const fetchData = $derived(async () => {
-		const response = await fetch(PUBLIC_CMS_API, options);
+		const response = await fetch(publicCmsApi, options);
 		const json = await response.json();
 
 		// pagesCount = json.data.form.pages.length;
@@ -87,8 +88,8 @@
 	const onSubmit = $derived(async (e: SubmitEvent, formData: any, siteId: number = 1) => {
 		e.preventDefault();
 		isLoading = true;
-		// return early if recaptcha instance is not present and there is no recaptcha key
-		if (!recaptcha && !recaptchaKey) return;
+		// return early if recaptcha instance is not present and there is a recaptcha key
+		if (!recaptcha && recaptchaKey) return;
 		const page = document.getElementById(pages[pageIndex].id) as HTMLFormElement;
 		const formFields = page.querySelectorAll('input, select, textarea');
 		let isValid = true;
@@ -111,7 +112,7 @@
 		const formMutation = getFormMutation(formData?.form, siteId);
 		const formDataVariables = await getMutationVariables(formData?.form, form);
 
-		const response = await fetch(PUBLIC_CMS_API, {
+		const response = await fetch(publicCmsApi, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

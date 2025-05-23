@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_CMS_API } from '$env/static/public';
 	import { FormieForm } from '$lib/index.js';
 
 	let { data } = $props();
@@ -12,7 +13,7 @@
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 <section>
-	<FormieForm handle={form[0].handle}>
+	<FormieForm handle={form[0].handle} publicCmsApi={PUBLIC_CMS_API}>
 		{#snippet skeletonSnippet()}
 			this is a skeleton fallback
 		{/snippet}
