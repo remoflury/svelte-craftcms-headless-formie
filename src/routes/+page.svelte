@@ -1,17 +1,15 @@
 <script lang="ts">
 	import { PUBLIC_CMS_API, PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY } from '$env/static/public';
 	import { FormieForm } from '$lib/index.js';
+	import type { AfterSubmitState } from '$lib/types/FormTypes.js';
 
 	let { data } = $props();
 	const form = $derived(data.data.form);
 
 	let isLoading = $state(false);
+	let submitButtonText = $state('');
+	let afterSubmitState: AfterSubmitState | undefined = $state();
 </script>
-
-<h1>Welcome to your library project</h1>
-<h2>{data.data.title}</h2>
-<p>Create your package using @sveltejs/package and preview/showcase your work with SvelteKit</p>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 <section>
 	<FormieForm
@@ -21,17 +19,24 @@
 		onsuccessfulsubmit={(message) => console.log(message)}
 		onerror={(message) => console.log(message)}
 		bind:isLoading
+		bind:submitButtonText
+		bind:afterSubmitState
 	>
 		{#snippet skeletonSnippet()}
 			this is a skeleton fallback
 		{/snippet}
 
 		{#snippet submitButton()}
-			<button>Submiiit</button>
+			<button>{submitButtonText}</button>
 		{/snippet}
 
 		{#snippet afterSubmitSnippet()}
-			<p>This will be shown after submission</p>
+			{#if afterSubmitState}
+				<p style="color: {afterSubmitState.isSuccess ? 'green' : 'red'}">
+					<!-- eslint-disable-next-line -->
+					{@html afterSubmitState.message}
+				</p>
+			{/if}
 		{/snippet}
 
 		{#snippet errorSnippet()}

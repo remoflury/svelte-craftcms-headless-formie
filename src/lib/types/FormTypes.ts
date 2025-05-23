@@ -250,3 +250,5 @@ export type FileUploadProps = BaseFormFieldProps<'FileUpload'> & {
 	limitFiles: string | null;
 	allowedKinds: string[];
 };
+
+export type AfterSubmitState = { message: string | null; isSuccess: boolean };

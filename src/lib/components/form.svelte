@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { AfterSubmitState } from '$lib/types/FormTypes.js';
 	import { addRecaptcha, checkFieldConditions } from '$lib/utils/formUtils.js';
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
 	import { onMount, type Snippet } from 'svelte';
@@ -10,11 +11,13 @@
 	type Props = {
 		handle: string;
 		submitButton: Snippet;
+		submitButtonText?: string;
 		isLoading?: boolean;
 		onsuccessfulsubmit?: (message: string | null) => void;
 		onerror?: (message: string | null) => void;
 		skeletonSnippet?: Snippet;
 		errorSnippet?: Snippet;
+		afterSubmitState?: AfterSubmitState;
 		afterSubmitSnippet?: Snippet; // component, which can be shown after submission
 		recaptchaHint?: Snippet;
 		recaptchaKey?: string;
@@ -31,7 +34,9 @@
 		recaptchaHint = recaptchaHintSnippet,
 		submitButton,
 		recaptchaKey,
-		publicCmsApi
+		publicCmsApi,
+		submitButtonText = $bindable(''),
+		afterSubmitState = $bindable(undefined)
 	}: Props = $props();
 
 	const variables = $derived({
@@ -82,6 +87,8 @@
 			)
 		);
 
+		// submitButtonText = json.data.form
+		submitButtonText = json.data.form.pages[0].settings.submitButtonLabel;
 		return {
 			form: json.data.form,
 			error: json.error
@@ -89,6 +96,7 @@
 	});
 
 	const onSubmit = $derived(async (e: SubmitEvent, formData: any, siteId: number = 1) => {
+		afterSubmitState = undefined;
 		e.preventDefault();
 		isLoading = true;
 		// return early if recaptcha instance is not present and there is a recaptcha key
@@ -130,9 +138,11 @@
 		if (json.data && !json.errors) {
 			isSuccessful = true;
 			successMessage = formData?.form?.settings?.submitActionMessageHtml;
+			afterSubmitState = { message: successMessage, isSuccess: true };
 			onsuccessfulsubmit?.(successMessage);
 		} else {
 			errorMessage = json.errors[0].message;
+			afterSubmitState = { message: errorMessage, isSuccess: false };
 			onerror?.(errorMessage);
 		}
 		isLoading = false;

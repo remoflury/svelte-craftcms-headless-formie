@@ -43,19 +43,21 @@ You can pass in multiple snippets:
 
 ### Props
 
-| Prop                 | Description                                                                                   | type                                             | default                     |
-| -------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------ | --------------------------- |
-| `handle`             | the form handle                                                                               | `string` (required)                              | -                           |
-| `submitButton`       | your custom submitButton (type="submit")                                                      | `Snippet` (required)                             |  -                          |
-| `publicCmsApiKey`    | the cms api url, where the submission has to be sent to                                       | `string` (required)                              | -                           |
-| `recaptchaKey`       | if recaptcha is setup in formie, pass in the recaptcha key                                    | `string \| undefined`                            | undefined                   |
-| `isLoading`          | allows you to bind to a loading state during the submission                                   | `boolean \| undefined`                           | false                       |
-| `skeletonSnippet`    | renders a skeleton loader snippet                                                             | `Snippet \| undefined`                           | undefined                   |
-| `errorSnippet`       | renders an error snippet if an error is caught during inititial render                        | `Snippet \| undefined`                           | undefined                   |
-| `afterSubmitSnippet` | renders a snippet after the submission                                                        | `Snippet \| undefined `                          | undefined                   |
-| `recaptchaHint`      | renders a snippet as a hint for recaptcha. Will only be shown, if a recaptchaKey is provieded | `Snippet \| undefined `                          | recaptchaHintSnippet.svelte |
-| `onsuccessfulsubmit` | callback on a successful submit, gives back a message as string (defined in formie)           | `(message: string \| null) => void \| undefined` | undefined                   |
-| `onerror`            | callback on an unsuccessful submit, gives back a message as string (defined in formie)        | `(message: string \| null) => void \| undefined` | undefined                   |
+| Prop                 | Description                                                                                                                       | type                                             | default                     |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | --------------------------- |
+| `handle`             | the form handle                                                                                                                   | `string` (required)                              | -                           |
+| `submitButton`       | your custom submitButton (type="submit")                                                                                          | `Snippet` (required)                             |  -                          |
+| `publicCmsApiKey`    | the cms api url, where the submission has to be sent to                                                                           | `string` (required)                              | -                           |
+| `submitButtonText`   | bindable variable, which will update with the button text from craft / formie                                                     | `string \| ''`                                   | -                           |
+| `afterSubmitState`   | bindable variable, which will show wether submission was successful and will hold the error / success message from craft / formie | `AfterSubmitState \| undefined`                  | -                           |
+| `recaptchaKey`       | if recaptcha is setup in formie, pass in the recaptcha key                                                                        | `string \| undefined`                            | undefined                   |
+| `isLoading`          | allows you to bind to a loading state during the submission                                                                       | `boolean \| undefined`                           | false                       |
+| `skeletonSnippet`    | renders a skeleton loader snippet                                                                                                 | `Snippet \| undefined`                           | undefined                   |
+| `errorSnippet`       | renders an error snippet if an error is caught during inititial render                                                            | `Snippet \| undefined`                           | undefined                   |
+| `afterSubmitSnippet` | renders a snippet after the submission                                                                                            | `Snippet \| undefined `                          | undefined                   |
+| `recaptchaHint`      | renders a snippet as a hint for recaptcha. Will only be shown, if a recaptchaKey is provieded                                     | `Snippet \| undefined `                          | recaptchaHintSnippet.svelte |
+| `onsuccessfulsubmit` | callback on a successful submit, gives back a message as string (defined in formie)                                               | `(message: string \| null) => void \| undefined` | undefined                   |
+| `onerror`            | callback on an unsuccessful submit, gives back a message as string (defined in formie)                                            | `(message: string \| null) => void \| undefined` | undefined                   |
 
 ## Example Usage
 
@@ -67,6 +69,8 @@ You can pass in multiple snippets:
 	let { data } = $props();
 	const form = $derived(data.data.form);
 	let isLoading = $state(false);
+	let submitButtonText = $state('');
+	let afterSubmitState: AfterSubmitState | undefined = $state();
 </script>
 
 <FormieForm
@@ -76,17 +80,23 @@ You can pass in multiple snippets:
 	onsuccessfulsubmit={(message) => console.log(message)}
 	onerror={(message) => console.log(message)}
 	bind:isLoading
+	bind:submitButtonText
+	bind:afterSubmitState
 >
 	{#snippet skeletonSnippet()}
 		this is a skeleton fallback
 	{/snippet}
 
 	{#snippet submitButton()}
-		<button>Submiiit</button>
+		<button>{submitButtonText}</button>
 	{/snippet}
 
 	{#snippet afterSubmitSnippet()}
-		<p>This will be shown after submission</p>
+		{#if afterSubmitState}
+			<p style="color: {afterSubmitState.isSuccess ? 'green' : 'red'}">
+				{@html afterSubmitState.message}
+			</p>
+		{/if}
 	{/snippet}
 
 	{#snippet errorSnippet()}
@@ -112,3 +122,8 @@ Currently, only the following formie Fields are supported:
 - Phone Number
 - Radio Buttons
 - Single-line Text
+
+TODO
+
+1. correct Typing
+2. JSDocs @component for formieForm.svelte
