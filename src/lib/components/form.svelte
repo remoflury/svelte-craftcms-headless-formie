@@ -13,17 +13,19 @@
 
 	type Props = {
 		handle: string;
+		submitButton: Snippet;
+		isLoading?: boolean;
 		onsuccessfulsubmit?: () => void;
 		skeletonSnippet?: Snippet;
 		errorSnippet?: Snippet;
-		isLoading?: boolean;
 	};
 	let {
 		handle,
 		onsuccessfulsubmit,
 		errorSnippet,
 		skeletonSnippet,
-		isLoading = $bindable(false)
+		isLoading = $bindable(false),
+		submitButton
 	}: Props = $props();
 
 	const variables = $derived({
@@ -191,6 +193,7 @@
 			</div>
 		{/each}
 		{#if !isSuccessful}
+			{@render submitButton()}
 			<!-- <div class="mt-4 lg:mt-6 2xl:mt-8">
 				<Button type="submit" disabled={isLoading} active={true} aria-busy={isLoading}
 					>{formData.form.pages[0].settings.submitButtonLabel}</Button

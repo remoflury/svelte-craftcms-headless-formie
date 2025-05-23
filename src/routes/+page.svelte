@@ -17,6 +17,10 @@
 			this is a skeleton fallback
 		{/snippet}
 
+		{#snippet submitButton()}
+			<button>Submiiit</button>
+		{/snippet}
+
 		{#snippet errorSnippet()}
 			<p>This is an error message</p>
 		{/snippet}
