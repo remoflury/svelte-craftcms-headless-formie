@@ -11,7 +11,7 @@
 </script>
 
 {#if field}
-	<fieldset>
+	<fieldset data-formie-field-checkboxes>
 		<Label for={field.handle} required={field.required}>{field.label}</Label>
 		{#each field.options as option, i (option.value)}
 			<div

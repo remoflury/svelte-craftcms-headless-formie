@@ -16,7 +16,7 @@
 	}: Props = $props();
 </script>
 
-<svelte:element this={tag} {...restProps} for={forAttr} data-label>
+<svelte:element this={tag} {...restProps} for={forAttr} data-formie-label>
 	{@render children?.()}
 	{#if required}
 		<sup class="text-red-300"> *</sup>

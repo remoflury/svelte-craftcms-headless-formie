@@ -32,7 +32,7 @@ In your svelte file, import the component. And add the form handle and the publi
 <FormieForm handle="your-form-handle" publicCmsApi={PUBLIC_CMS_API} />
 ```
 
-### snippets
+### Snippets
 
 You can pass in multiple snippets:
 
@@ -59,7 +59,53 @@ You can pass in multiple snippets:
 | `onsuccessfulsubmit` | callback on a successful submit, gives back a message as string (defined in formie)                                               | `(message: string \| null) => void \| undefined` | undefined                   |
 | `onerror`            | callback on an unsuccessful submit, gives back a message as string (defined in formie)                                            | `(message: string \| null) => void \| undefined` | undefined                   |
 
-## Example Usage
+## Styling
+
+In your main css file just apply all the styles to the input fields.
+
+`<FormieForm/>` Component does have a structure like this:
+
+```html
+<form data-formie-form>
+	<div data-form-page="1">
+		<!-- the number resemblences the current form page -->
+		<div data-formie-field>
+			<!-- wrapper for each input -->
+			<div data-formie-field-single-line-text>
+				<!-- data-attribute for top html element of given input type -->
+				...
+			</div>
+		</div>
+	</div>
+</form>
+```
+
+The `data-formie-field-*` attribute stands for the top html element of a given input type. Those are the available data-attributes:
+
+- `data-formie-field-address`
+- `data-formie-field-agree`
+- `data-formie-field-checkboxes`
+- `data-formie-field-date`
+- `data-formie-field-dropdown`
+- `data-formie-field-email`
+- `data-formie-field-heading`
+- `data-formie-field-multi-line-text`
+- `data-formie-field-name`
+- `data-formie-field-number`
+- `data-formie-field-phone`
+- `data-formie-field-radio`
+- `data-formie-field-single-line-text`
+- `data-formie-recaptcha-hint`
+
+Those data-attributes can be used to selectively target the fields.
+
+```css
+[data-formie-field-email] {
+	border: solid 1px black;
+}
+```
+
+## Example
 
 ```svelte
 <script lang="ts">

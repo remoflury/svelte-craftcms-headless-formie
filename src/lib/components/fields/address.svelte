@@ -23,7 +23,7 @@
 </script>
 
 {#if field}
-	<fieldset id={field.handle}>
+	<fieldset id={field.handle} data-formie-field-address>
 		<Label required={field.required} tag="legend">{field.label}</Label>
 		{#each field.fields as subfield (subfield.id)}
 			{#if subfield.displayName === 'Address1'}

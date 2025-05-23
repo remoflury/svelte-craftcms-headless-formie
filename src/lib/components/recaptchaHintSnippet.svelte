@@ -3,7 +3,7 @@
 </script>
 
 {#snippet recaptchaHintSnippet()}
-	<small data-recaptcha-hind>
+	<small data-formie-recaptcha-hint>
 		This site is protected by reCAPTCHA and the Google
 		<a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a>
 		and

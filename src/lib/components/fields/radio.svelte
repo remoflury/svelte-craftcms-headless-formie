@@ -23,7 +23,7 @@
 </script>
 
 {#if field}
-	<div>
+	<div data-formie-field-radio>
 		<Label required={field.required} for={field.handle}>{field.label}</Label>
 		{#each field.options as option, i (option.value)}
 			<div

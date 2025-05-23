@@ -12,10 +12,10 @@
 </script>
 
 {#if field}
-	<div class="">
+	<div data-formie-field-multi-line-text>
 		<Label for={field.handle} required={field.required}>{field.label}</Label>
 		{#if field.instructions}
-			<small class="">{field.instructions}</small>
+			<small>{field.instructions}</small>
 		{/if}
 		<textarea
 			id={field.handle}

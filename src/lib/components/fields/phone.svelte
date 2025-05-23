@@ -12,7 +12,7 @@
 </script>
 
 {#if field}
-	<div>
+	<div data-formie-field-phone>
 		<Label required={field.required} for={field.handle}>{field.label}</Label>
 		<div>
 			{#if field.countryEnabled}

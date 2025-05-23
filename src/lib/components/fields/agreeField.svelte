@@ -12,7 +12,7 @@
 </script>
 
 {#if field}
-	<div class="">
+	<div data-formie-field-agree>
 		<Label required={field.required}>{field.label}</Label>
 		<div class="">
 			<input

@@ -12,9 +12,9 @@
 </script>
 
 {#if field}
-	<div>
+	<div data-formie-field-name>
 		{#if field.useMultipleFields}
-			<fieldset class="" id={field.handle}>
+			<fieldset id={field.handle}>
 				{#each field.fields as block (block.label)}
 					<Label required={block.required} for="{field.handle}-{block.handle}">{block.label}</Label>
 					<input

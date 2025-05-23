@@ -12,7 +12,7 @@
 </script>
 
 {#if field}
-	<div>
+	<div data-formie-field-email>
 		<Label for={field.handle} required={field.required}>{field.label}</Label>
 		<input
 			type="email"

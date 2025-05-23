@@ -14,7 +14,7 @@
 </script>
 
 {#if field}
-	<div class="">
+	<div data-formie-field-date>
 		<Label required={field.required} for={field.handle}>{field.label}</Label>
 		<input
 			bind:this={input}

@@ -166,14 +166,14 @@
 		data-formie-form
 	>
 		{#each formData.form.pages as page, i (page.id)}
-			<div id={page.id} class:hidden={i !== pageIndex || successMessage} data-form-page={page.id}>
+			<div id={page.id} class:hidden={i !== pageIndex || successMessage} data-formie-page={page.id}>
 				{#if page.rows.length > 0}
 					<!-- eslint-disable-next-line -->
 					{#each page.rows as row (crypto.randomUUID())}
 						<!-- eslint-disable-next-line -->
 						{#each row.rowFields as field (crypto.randomUUID())}
 							{#if checkFieldConditions(field.conditions, formFields)}
-								<div data-form-field>
+								<div data-formie-field>
 									<Field {field} {updateFormFields} />
 								</div>
 							{/if}

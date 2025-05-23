@@ -12,7 +12,7 @@
 </script>
 
 {#if field}
-	<div>
+	<div data-formie-field-dropdown>
 		<Label required={field.required} for={field.name}>{field.label}</Label>
 
 		<select name={field.handle} id={field.name} required={field.required}>
