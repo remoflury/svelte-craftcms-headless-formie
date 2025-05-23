@@ -52,7 +52,7 @@ You can pass in multiple snippets:
 | `isLoading`          | allows you to bind to a loading state during the submission                            | boolean                                        | false     |
 | `skeletonSnippet`    | renders a skeleton loader snippet                                                      | Snippet \| undefined                           | undefined |
 | `errorSnippet`       | renders an error snippet if an error is caught during inititial render                 | Snippet \| undefined                           | undefined |
-| `afterSubmitSnippet` | renders a snippet after the submission                                                 | Snippet \| undefined \| undefined              |           |
+| `afterSubmitSnippet` | renders a snippet after the submission                                                 | Snippet \| undefined                           | undefined |
 | `onsuccessfulsubmit` | callback on a successful submit, gives back a message as string (defined in formie)    | (message: string \| null) => void \| undefined | undefined |
 | `onerror`            | callback on an unsuccessful submit, gives back a message as string (defined in formie) | (message: string \| null) => void \| undefined | undefined |
 
