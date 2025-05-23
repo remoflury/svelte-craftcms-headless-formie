@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { PUBLIC_CMS_API, PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY } from '$env/static/public';
-	import { checkFieldConditions } from '$lib/utils/formUtils.js';
+	import { PUBLIC_CMS_API } from '$env/static/public';
+	import { addRecaptcha, checkFieldConditions } from '$lib/utils/formUtils.js';
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
 	import { onMount, type Snippet } from 'svelte';
 	import { getFormMutation, getMutationVariables } from '$lib/utils/mutationUtils.js';
@@ -18,6 +18,7 @@
 		onsuccessfulsubmit?: () => void;
 		skeletonSnippet?: Snippet;
 		errorSnippet?: Snippet;
+		recaptchaKey?: string;
 	};
 	let {
 		handle,
@@ -25,7 +26,8 @@
 		errorSnippet,
 		skeletonSnippet,
 		isLoading = $bindable(false),
-		submitButton
+		submitButton,
+		recaptchaKey
 	}: Props = $props();
 
 	const variables = $derived({
@@ -50,19 +52,6 @@
 		},
 		body: JSON.stringify({ query, variables })
 	});
-
-	/* eslint-disable  @typescript-eslint/no-explicit-any */
-	const upsert = (array: any[], element: { [key: string]: string }) => {
-		const i = array.findIndex((el) => {
-			return el.handle === element.handle;
-		});
-
-		if (i > -1) {
-			array[i] = element;
-		} else {
-			array.push(element);
-		}
-	};
 
 	const updateFormFields = (handle: string, newValue: string) => {
 		formFields = formFields.map((field) => {
@@ -98,7 +87,8 @@
 	const onSubmit = $derived(async (e: SubmitEvent, formData: any, siteId: number = 1) => {
 		e.preventDefault();
 		isLoading = true;
-		if (!recaptcha) return;
+		// return early if recaptcha instance is not present and there is no recaptcha key
+		if (!recaptcha && !recaptchaKey) return;
 		const page = document.getElementById(pages[pageIndex].id) as HTMLFormElement;
 		const formFields = page.querySelectorAll('input, select, textarea');
 		let isValid = true;
@@ -115,12 +105,8 @@
 
 		successMessage = null;
 		errorMessage = null;
-		const token = await recaptcha.execute('recaptchaCaptcha');
-		upsert(formData.form.captchas, {
-			handle: 'recaptchaCaptcha',
-			name: 'g-recaptcha-response',
-			value: token
-		});
+
+		addRecaptcha(recaptcha, formData, recaptchaKey);
 
 		const formMutation = getFormMutation(formData?.form, siteId);
 		const formDataVariables = await getMutationVariables(formData?.form, form);
@@ -157,7 +143,8 @@
 	});
 
 	onMount(async () => {
-		recaptcha = await load(PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY, { autoHideBadge: true });
+		if (!recaptchaKey) return;
+		recaptcha = await load(recaptchaKey, { autoHideBadge: true });
 	});
 </script>
 
