@@ -57,5 +57,11 @@
 	},
 	"keywords": [
 		"svelte"
-	]
+	],
+	"dependencies": {
+		"form-data-json-convert": "^2.2.3",
+		"graphql-tag": "^2.12.6",
+		"lodash-es": "^4.17.21",
+		"recaptcha-v3": "^1.11.3"
+	}
 }
