@@ -241,8 +241,8 @@ export const FormFragment = gql`
 		}
 
 		pages {
-			label
 			id
+			label
 
 			settings {
 				submitButtonLabel

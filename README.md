@@ -172,4 +172,8 @@ Currently, only the following formie Fields are supported:
 TODO
 
 1. correct Typing
+   - typing Fetching done
+   - typing individual fields
 2. JSDocs @component for formieForm.svelte
+3. Error Handling: show error on input field
+4.
