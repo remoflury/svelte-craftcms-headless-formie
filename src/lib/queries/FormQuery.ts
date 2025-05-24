@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 
 export const FieldFragment = gql`
 	fragment FieldFragment on FieldInterface {
+		id
 		label
 		handle
 		instructions
@@ -10,6 +11,7 @@ export const FieldFragment = gql`
 		displayName
 		typeName
 		inputTypeName
+		defaultValue
 		placeholder
 		errorMessage
 		labelPosition
@@ -37,35 +39,6 @@ export const FieldFragment = gql`
 				disabled
 				isOptgroup
 			}
-			conditions
-			cssClasses
-			defaultValue
-			displayName
-			emailValue
-			enableConditions
-			enableContentEncryption
-			enabled
-			errorMessage
-			handle
-			includeInEmail
-			inputAttributes {
-				label
-				value
-			}
-			inputTypeName
-			instructions
-			instructionsPosition
-			label
-			labelPosition
-			layout
-			matchField
-			placeholder
-			prePopulate
-			required
-			typeName
-			type
-			uid
-			visibility
 		}
 		... on Field_Agree {
 			descriptionHtml

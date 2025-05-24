@@ -8,6 +8,8 @@
 	let { item }: Props = $props();
 
 	const field = $derived(item?.displayName == 'Checkboxes' ? item : null);
+
+	$inspect(field);
 </script>
 
 {#if field}

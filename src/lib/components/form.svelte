@@ -104,6 +104,7 @@
 		}
 
 		if (errors) {
+			console.error(errors);
 			throw new Error(errors[0].message);
 		}
 	});

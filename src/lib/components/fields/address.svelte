@@ -87,7 +87,7 @@
 				/>
 			{/if}
 
-			{#if subfield.displayName === 'AddressCountry'}
+			{#if subfield.displayName === 'AddressCountry' && 'options' in subfield && subfield['options']}
 				<select id="country" name="{field.handle}-country" required={field.required}>
 					{#each subfield.options as country (country.value)}
 						<option value={country.value} selected={'CH' == country.value}>{country.label}</option>

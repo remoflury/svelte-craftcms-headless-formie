@@ -108,28 +108,27 @@ export type FieldProps =
 	| HiddenFieldProps;
 
 export type BaseFormFieldProps<T extends string> = {
-	conditions: string;
-	containerAttributes: string | null;
-	cssClasses: string | null;
-	displayName: T;
-	defaultValue: string | null;
-	enableConditions: boolean;
-	enableContentEncryption: boolean;
-	errorMessage: string | null;
-	handle: string;
-	id: string;
-	inputAttributes: string | null;
-	inputTypeName: string;
-	instructions: string | null;
-	instructionsPosition: string | null;
 	label: string;
-	labelPosition: string | null;
-	name: string;
-	placeholder: string | null;
-	required: boolean;
+	handle: string;
+	instructions: string | null;
 	type: string;
+	required: boolean;
+	displayName: T;
 	typeName: string;
+	inputTypeName: string;
+	placeholder: string | null;
+	labelPosition: string | null;
+	errorMessage: string | null;
+	instructionsPosition: string | null;
+	cssClasses: string | null;
+	enableConditions: boolean;
+	conditions: string;
+	enableContentEncryption: boolean;
+	containerAttributes: { label: string; value: string };
 	visibility: string | null;
+	defaultValue: string | null;
+	id: string;
+	inputAttributes: { label: string; value: string };
 };
 
 export type HiddenFieldProps = BaseFormFieldProps<'HiddenField'> & {
@@ -189,32 +188,32 @@ export type DateFieldProps = BaseFormFieldProps<'Date'> & {
 export type AddressFieldProps = BaseFormFieldProps<'Address'> & {
 	fields: {
 		id: string;
+		uid: string;
 		label: string;
-		placeholder: string;
-		instructions: string;
+		placeholder: string | null;
+		instructions: string | null;
 		displayName: string;
-		emailValue: string;
+		emailValue: string | null;
 		typeName: string;
 		type: string;
 		inputTypeName: string;
 		required: boolean;
 		handle: string;
-		conditions: string;
-		cssClasses: string;
-		defaultValue: string;
+		conditions: string | null;
+		cssClasses: string | null;
+		defaultValue: string | null;
 		enableConditions: boolean;
 		enableContentEncryption: boolean;
 		enabled: boolean;
-		errorMessage: string;
+		errorMessage: string | null;
 		includeInEmail: boolean;
-		instructionsPosition: string;
-		labelPosition: string;
-		matchField: string;
-		prePopulate: string;
+		instructionsPosition: string | null;
+		labelPosition: string | null;
+		matchField: string | null;
+		prePopulate: string | null;
 		subFieldLabelPosition: string;
-		uid: string;
-		visibility: string;
-		options: {
+		visibility: string | null;
+		options?: {
 			label: string;
 			value: string;
 			isDefault: boolean;
@@ -231,7 +230,6 @@ export type AgreeFieldProps = BaseFormFieldProps<'Agree'> & {
 
 export type CheckboxesFieldProps = BaseFormFieldProps<'Checkboxes'> & {
 	layout: string;
-	name: string;
 	options: {
 		checked: boolean;
 		label: string;
@@ -239,8 +237,7 @@ export type CheckboxesFieldProps = BaseFormFieldProps<'Checkboxes'> & {
 		isDefault: boolean;
 		disabled: boolean;
 	}[];
-	toggleCheckbox: string;
-	toggleCheckboxLabel: string;
+	multi: boolean;
 };
 
 export type DropdownFieldProps = BaseFormFieldProps<'Dropdown'> & {
