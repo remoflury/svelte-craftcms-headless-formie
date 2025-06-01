@@ -173,6 +173,17 @@
 	});
 </script>
 
+<!-- 
+@component FormieForm
+A Formie Form Component, which can be used to make form submissions to
+Craft CMS's formie plugin in headless configuration.
+
+Usage:
+  ```svelte
+  <FormieForm handle="your-form-handle" publicCmsApi={PUBLIC_CMS_API} />
+  ```
+-->
+
 {#await fetchData()}
 	{#if skeletonSnippet}
 		{@render skeletonSnippet()}

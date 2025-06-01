@@ -72,7 +72,7 @@
 		"Craft CMS",
 		"formie",
 		"headless",
-		"graphql"
+		"graphqlgit"
 	],
 	"dependencies": {
 		"@changesets/cli": "^2.29.4",

@@ -1,6 +1,6 @@
 # Svelte Forms for Craft CMS & Formie
 
-This is a svelte library, which has a form component for [Craft CMS](https://craftcms.com/) in its headless configuration with using the [plugin formie](https://verbb.io/craft-plugins/formie/features).
+This is a repo which is useful for [Craft CMS](https://craftcms.com/) in its headless configuration with using the [plugin formie](https://verbb.io/craft-plugins/formie/features).
 It allows you to simply install the dependencies, style your components without further configuration.
 
 ## Requirements
