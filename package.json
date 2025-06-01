@@ -1,6 +1,17 @@
 {
 	"name": "svelte-craftcms-headless-formie",
 	"version": "0.0.1",
+	"author": "Remo Flury (https://remoflury.ch)",
+	"license": "MIT",
+	"description": "Svelte Package for using Craft CMS with the Formie Plugin in headless configuration",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/remoflury/svelte-craftcms-headless-formie.git"
+	},
+	"bugs": {
+		"url": "https://github.com/remoflury/svelte-craftcms-headless-formie/issues"
+	},
+	"homepage": "https://github.com/remoflury/svelte-craftcms-headless-formie#readme",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
@@ -57,7 +68,11 @@
 		"vite": "^6.2.6"
 	},
 	"keywords": [
-		"svelte"
+		"svelte",
+		"Craft CMS",
+		"formie",
+		"headless",
+		"graphql"
 	],
 	"dependencies": {
 		"@changesets/cli": "^2.29.4",
