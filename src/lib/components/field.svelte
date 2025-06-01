@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FieldProps } from '$lib/types/FormTypes.js';
+	import type { FieldProps } from '$lib/types/FieldTypes.js';
 	import { type Component } from 'svelte';
 
 	type Props = {

@@ -14,7 +14,7 @@ It allows you to simply install the dependencies, style your components without 
 In your frontend code run
 
 ```sh
-npm install tbd
+npm install svelte-craftcms-headless-formie
 ```
 
 Enable Views for the formie forms and creation of submission in the graphql schema.
@@ -169,12 +169,3 @@ Currently, only the following formie Fields are supported:
 - Phone Number
 - Radio Buttons
 - Single-line Text
-
-TODO
-
-1. correct Typing
-   - typing Fetching done
-   - typing individual fields
-2. JSDocs @component for formieForm.svelte
-3. Error Handling: show error on input field
-4.

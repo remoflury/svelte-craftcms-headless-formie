@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FieldProps } from '$lib/types/FormTypes.js';
+	import type { FieldProps } from '$lib/types/FieldTypes.js';
 	import Label from '../label.svelte';
 
 	type Props = {
@@ -12,7 +12,7 @@
 </script>
 
 {#if field}
-	<div data-formie-field-agree>
+	<div data-formie-field-agree class={field.cssClasses ?? ''}>
 		<Label required={field.required}>{field.label}</Label>
 		<div class="">
 			<input

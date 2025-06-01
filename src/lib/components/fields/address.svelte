@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AddressFieldProps, FieldProps } from '$lib/types/FormTypes.js';
+	import type { AddressFieldProps, FieldProps } from '$lib/types/FieldTypes.js';
 	import Label from '../label.svelte';
 
 	type Props = {
@@ -23,7 +23,7 @@
 </script>
 
 {#if field}
-	<fieldset id={field.handle} data-formie-field-address>
+	<fieldset id={field.handle} data-formie-field-address class={field.cssClasses ?? ''}>
 		<Label required={field.required} tag="legend">{field.label}</Label>
 		{#each field.fields as subfield (subfield.id)}
 			{#if subfield.displayName === 'Address1'}

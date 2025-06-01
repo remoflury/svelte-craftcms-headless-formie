@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FieldProps } from '$lib/types/FormTypes.js';
+	import type { FieldProps } from '$lib/types/FieldTypes.js';
 	import Label from '../label.svelte';
 
 	type Props = {
@@ -12,7 +12,7 @@
 </script>
 
 {#if field}
-	<div data-formie-field-number>
+	<div data-formie-field-number class={field.cssClasses ?? ''}>
 		<Label for={field.handle} required={field.required}>{field.label}</Label>
 
 		<input
@@ -21,8 +21,8 @@
 			name={field.handle}
 			placeholder={field.placeholder}
 			required={field.required}
-			min={field.min}
-			max={field.max !== 0 ? field.max : undefined}
+			min={field.minValue !== null ? field.minValue : undefined}
+			max={field.maxValue !== null ? field.maxValue : undefined}
 		/>
 	</div>
 {/if}

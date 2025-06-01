@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FieldProps } from '$lib/types/FormTypes.js';
+	import type { FieldProps } from '$lib/types/FieldTypes.js';
 	import Label from '../label.svelte';
 
 	type Props = {
@@ -12,7 +12,7 @@
 </script>
 
 {#if field}
-	<div data-formie-field-name>
+	<div data-formie-field-name class={field.cssClasses ?? ''}>
 		{#if field.useMultipleFields}
 			<fieldset id={field.handle}>
 				{#each field.fields as block (block.label)}

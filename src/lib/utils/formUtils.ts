@@ -9,9 +9,10 @@ import type { ReCaptchaInstance } from 'recaptcha-v3';
  * @returns {boolean} - `true`, wenn die Bedingungen erfüllt sind, sonst `false`
  */
 export const checkFieldConditions = (
-	conditionsStr: string,
+	conditionsStr: string | null,
 	formFields: { handle: string; value: string }[]
 ) => {
+	if (!conditionsStr) return true;
 	// Parse the conditions JSON
 	const conditions = JSON.parse(conditionsStr);
 

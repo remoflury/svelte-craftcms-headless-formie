@@ -30,7 +30,6 @@ export const FieldFragment = gql`
 			value
 		}
 		... on Field_Checkboxes {
-			id
 			multi
 			options {
 				value
@@ -47,33 +46,32 @@ export const FieldFragment = gql`
 			defaultState
 		}
 		... on Field_Address {
-			id
 			fields {
-				id
-				label
-				placeholder
-				instructions
-				displayName
-				emailValue
-				typeName
-				type
-				inputTypeName
-				required
-				handle
 				conditions
 				cssClasses
 				defaultValue
+				displayName
+				emailValue
+				enabled
 				enableConditions
 				enableContentEncryption
-				enabled
 				errorMessage
+				handle
+				id
 				includeInEmail
+				inputTypeName
+				instructions
 				instructionsPosition
+				label
 				labelPosition
 				matchField
+				placeholder
+				typeName
+				type
+				required
 				prePopulate
-				uid
 				visibility
+				uid
 				... on Field_AddressCountry {
 					id
 					options {
@@ -87,17 +85,8 @@ export const FieldFragment = gql`
 				}
 			}
 		}
-		... on Field_MultiLineText {
-			defaultValue
-		}
-		... on Field_SingleLineText {
-			defaultValue
-		}
-		... on Field_Email {
-			defaultValue
-		}
+
 		... on Field_Dropdown {
-			defaultValue
 			options {
 				label
 				value
@@ -121,18 +110,25 @@ export const FieldFragment = gql`
 			minDate
 			maxDate
 			availableDaysOfWeek
-			datePickerOptions {
-				label
-				value
+			nestedRows {
+				rowFields {
+					id
+					handle
+					enabled
+					label
+					required
+				}
 			}
 		}
+
 		... on Field_Number {
 			min
+			minValue
 			max
+			maxValue
 		}
 
 		... on Field_Phone {
-			defaultValue
 			countryEnabled
 			countryDefaultValue
 			countryAllowed
@@ -143,18 +139,12 @@ export const FieldFragment = gql`
 		}
 
 		... on Field_Radio {
-			layout
-
 			options {
 				label
 				value
 				isDefault
 				disabled
 			}
-		}
-
-		... on Field_SingleLineText {
-			defaultValue
 		}
 	}
 `;
