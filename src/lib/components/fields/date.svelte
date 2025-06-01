@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FieldProps } from '$lib/types/FormTypes.js';
+	import type { FieldProps } from '$lib/types/FieldTypes.js';
 	import Label from '../label.svelte';
 
 	type Props = {
@@ -10,18 +10,26 @@
 
 	const field = $derived(item?.displayName == 'Date' ? item : null);
 
-	let input: HTMLInputElement | undefined = $state();
+	const type: 'time' | 'date' | 'datetime-local' | null = $derived.by(() => {
+		const enabledFields = field?.nestedRows?.[0].rowFields?.filter((r) => r.enabled) || [];
+
+		if (enabledFields.length == 0) return null;
+		if (enabledFields.length == 1 && enabledFields[0].handle == 'date') return 'date';
+		if (enabledFields.length == 1 && enabledFields[0].handle == 'time') return 'time';
+		return 'datetime-local';
+	});
 </script>
 
-{#if field}
-	<div data-formie-field-date>
+{#if field && type}
+	<div data-formie-field-date class={field.cssClasses ?? ''}>
 		<Label required={field.required} for={field.handle}>{field.label}</Label>
 		<input
-			bind:this={input}
 			id={field.handle}
-			type="date"
+			{type}
 			name={field.handle}
-			placeholder={field.placeholder || 'dd / mm / yyyy'}
+			value={field.defaultValue}
+			min={field.minDate}
+			max={field.maxDate}
 			required={field.required}
 			class="datePicker"
 		/>

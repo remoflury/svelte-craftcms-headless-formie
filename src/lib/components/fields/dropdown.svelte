@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FieldProps } from '$lib/types/FormTypes.js';
+	import type { FieldProps } from '$lib/types/FieldTypes.js';
 	import Label from '../label.svelte';
 
 	type Props = {
@@ -12,10 +12,10 @@
 </script>
 
 {#if field}
-	<div data-formie-field-dropdown>
-		<Label required={field.required} for={field.name}>{field.label}</Label>
+	<div data-formie-field-dropdown class={field.cssClasses ?? ''}>
+		<Label required={field.required} for={field.handle}>{field.label}</Label>
 
-		<select name={field.handle} id={field.name} required={field.required}>
+		<select name={field.handle} id={field.handle} required={field.required}>
 			{#each field.options as option (option.value)}
 				<option value={option.value} selected={option.isDefault}>{option.label}</option>
 			{/each}

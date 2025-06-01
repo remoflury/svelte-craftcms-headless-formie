@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FieldProps } from '$lib/types/FormTypes.js';
+	import type { FieldProps } from '$lib/types/FieldTypes.js';
 	import Label from '../label.svelte';
 
 	type Props = {
@@ -23,7 +23,7 @@
 </script>
 
 {#if field}
-	<div data-formie-field-radio>
+	<div data-formie-field-radio class={field.cssClasses ?? ''}>
 		<Label required={field.required} for={field.handle}>{field.label}</Label>
 		{#each field.options as option, i (option.value)}
 			<div

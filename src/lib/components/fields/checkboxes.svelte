@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FieldProps } from '$lib/types/FormTypes.js';
+	import type { FieldProps } from '$lib/types/FieldTypes.js';
 	import Label from '../label.svelte';
 
 	type Props = {
@@ -11,7 +11,7 @@
 </script>
 
 {#if field}
-	<fieldset data-formie-field-checkboxes>
+	<fieldset data-formie-field-checkboxes class={field.cssClasses ?? ''}>
 		<Label for={field.handle} required={field.required}>{field.label}</Label>
 		{#each field.options as option, i (option.value)}
 			<div
@@ -38,6 +38,6 @@
 
 <style lang="postcss">
 	input[type='checkbox'] {
-		padding: 0 !important;
+		padding: 0;
 	}
 </style>
