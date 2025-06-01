@@ -29,6 +29,7 @@
 		recaptchaHint?: Snippet;
 		recaptchaKey?: string;
 		publicCmsApi: string;
+		siteId?: string | number;
 	};
 	let {
 		handle,
@@ -44,6 +45,7 @@
 		publicCmsApi,
 		submitButtonText = $bindable(''),
 		afterSubmitState = $bindable(undefined),
+		siteId: submitToSiteId = undefined,
 		...rest
 	}: Props = $props();
 
@@ -113,7 +115,7 @@
 		async (
 			e: SubmitEvent,
 			formData: Exclude<FormieFetchDataProps, undefined>,
-			siteId: number = 1
+			siteId: number | string | undefined
 		) => {
 			afterSubmitState = undefined;
 			e.preventDefault();
@@ -180,7 +182,7 @@
 		<form
 			bind:this={form}
 			id={formData.data.form.handle}
-			onsubmit={async (e) => await onSubmit(e, formData.data!)}
+			onsubmit={async (e) => await onSubmit(e, formData.data!, submitToSiteId)}
 			data-formie-form
 			{...rest}
 		>
