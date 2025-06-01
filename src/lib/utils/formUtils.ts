@@ -117,6 +117,7 @@ export const addRecaptcha = async (
  * @returns boolean
  */
 export const areInputFieldsValid = (pages: { id: string }[], pageIndex: number): boolean => {
+	unsetAriaInvalid(pages, pageIndex);
 	const page = document.getElementById(pages[pageIndex].id) as HTMLFormElement;
 	const formFields = page.querySelectorAll('input, select, textarea');
 	let isValid = true;
@@ -128,4 +129,29 @@ export const areInputFieldsValid = (pages: { id: string }[], pageIndex: number):
 	});
 
 	return isValid;
+};
+
+/**
+ * @function setAriaInvalid
+ * @description sets a aria-invalid="true" attribute on the input field where the error occured, depending on the field-handle
+ * @param handle {string}
+ * @returns void
+ */
+export const setAriaInvalid = (handle: string) => {
+	const fields = [...document.querySelectorAll(`#${handle}`)];
+	if (!fields || !fields.length) return;
+	fields.forEach((field) => field.setAttribute('aria-invalid', 'true'));
+};
+
+/**
+ * @function unsetAriaInvalid
+ * @description unsets previously set aria-invalid="true" attribute to false
+ * @param handle {string}
+ * @returns void
+ */
+export const unsetAriaInvalid = (pages: { id: string }[], pageIndex: number) => {
+	const page = document.getElementById(pages[pageIndex].id) as HTMLFormElement;
+	const formFields = [...page.querySelectorAll('input, select, textarea')];
+
+	formFields.forEach((field) => field.setAttribute('aria-invalid', 'false'));
 };

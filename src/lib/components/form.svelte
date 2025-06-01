@@ -1,6 +1,11 @@
 <script lang="ts">
 	import type { AfterSubmitState } from '$lib/types/ComponentTypes.js';
-	import { addRecaptcha, areInputFieldsValid, checkFieldConditions } from '$lib/utils/formUtils.js';
+	import {
+		addRecaptcha,
+		areInputFieldsValid,
+		checkFieldConditions,
+		setAriaInvalid
+	} from '$lib/utils/formUtils.js';
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
 	import { onMount, type Snippet } from 'svelte';
 	import { getFormMutation, getMutationVariables } from '$lib/utils/mutationUtils.js';
@@ -150,6 +155,7 @@
 				onsuccessfulsubmit?.(afterSubmitState.message);
 			} else {
 				console.error(json.errors);
+				setAriaInvalid('numberrr');
 				afterSubmitState = {
 					message: formData?.form?.settings?.errorMessageHtml,
 					isSuccess: false
