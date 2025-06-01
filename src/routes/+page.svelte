@@ -1,7 +1,6 @@
 <script lang="ts">
-	import type { AfterSubmitState } from '$lib/types/ComponentTypes.js';
 	import { PUBLIC_CMS_API } from '$env/static/public';
-	import { FormieForm } from '$lib/index.js';
+	import { FormieForm, type AfterSubmitState } from '$lib/index.js';
 
 	let { data } = $props();
 	const form = $derived(data.data.form);
