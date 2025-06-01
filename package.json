@@ -22,7 +22,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"ci:publish": "npm run build && npx @changesets/cli && npx changeset version changeset publish"
+		"ci:publish": "npm run build && npx @changesets/cli && npm publish"
 	},
 	"files": [
 		"dist",
