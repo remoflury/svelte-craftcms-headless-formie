@@ -106,6 +106,17 @@ Those data-attributes can be used to selectively target the fields.
 }
 ```
 
+### Error Styling
+
+When a submission is not returned with errors from Craft CMS, the regarding input fields will be automatically set with an `aria-invalid="true"` flag. On resubmit, this will be set to false.
+This can be used to style invalid form-fields:
+
+```css
+[data-invalid='true'] {
+	color: red;
+}
+```
+
 ## Example
 
 ```svelte
