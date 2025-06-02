@@ -14,6 +14,7 @@
 	import Field from './field.svelte';
 	import type { HTMLFormAttributes } from 'svelte/elements';
 	import type {
+		CraftGraphQlErrorProps,
 		FormField,
 		FormieFetchDataProps,
 		FormieFetchProps,
@@ -145,17 +146,21 @@
 					variables: formDataVariables
 				})
 			});
-			const json = await response.json();
+			const { data, errors }: { data: unknown; errors: CraftGraphQlErrorProps[] } =
+				await response.json();
 
-			if (json.data && !json.errors) {
+			if (data && !errors) {
 				afterSubmitState = {
 					message: formData?.form?.settings?.submitActionMessageHtml,
 					isSuccess: true
 				};
 				onsuccessfulsubmit?.(afterSubmitState.message);
 			} else {
-				console.error(json.errors);
-				setAriaInvalid('numberrr');
+				const errorMessages: Record<string, string[]> = JSON.parse(
+					errors[0].message.replaceAll("'", '')
+				);
+				setAriaInvalid(Object.keys(errorMessages));
+
 				afterSubmitState = {
 					message: formData?.form?.settings?.errorMessageHtml,
 					isSuccess: false

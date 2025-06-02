@@ -28,9 +28,9 @@
 					name="{field.handle}[]"
 					value={option.value}
 					checked={option.isDefault}
-					required={field.required}
 					disabled={option.disabled}
 				/>
+				<!-- required={field.required} -->
 			</div>
 		{/each}
 	</fieldset>

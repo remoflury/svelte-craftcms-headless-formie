@@ -137,10 +137,13 @@ export const areInputFieldsValid = (pages: { id: string }[], pageIndex: number):
  * @param handle {string}
  * @returns void
  */
-export const setAriaInvalid = (handle: string) => {
-	const fields = [...document.querySelectorAll(`#${handle}`)];
-	if (!fields || !fields.length) return;
-	fields.forEach((field) => field.setAttribute('aria-invalid', 'true'));
+export const setAriaInvalid = (handles: string[]) => {
+	handles.forEach((handle) => {
+		// grab all the fields, whose id starts with the handle
+		const fields = [...document.querySelectorAll(`[id^="${handle}"]`)];
+		if (!fields || !fields.length) return;
+		fields.forEach((field) => field.setAttribute('aria-invalid', 'true'));
+	});
 };
 
 /**

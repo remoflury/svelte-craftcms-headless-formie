@@ -78,7 +78,7 @@ type FormieSettingsProps = {
 	validationOnSubmit: boolean;
 };
 
-type CraftGraphQlErrorProps = {
+export type CraftGraphQlErrorProps = {
 	extensions: {
 		category: string;
 	};
