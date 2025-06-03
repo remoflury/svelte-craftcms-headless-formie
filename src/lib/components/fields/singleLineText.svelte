@@ -13,7 +13,7 @@
 
 {#if field}
 	<div data-formie-single-line-text class={field.cssClasses ?? ''}>
-		<Label required={field.required}>{field.label}</Label>
+		<Label required={field.required} for={field.handle}>{field.label}</Label>
 		<input
 			type="text"
 			id={field.handle}
