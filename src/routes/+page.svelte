@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { PUBLIC_CMS_API } from '$env/static/public';
 	import { FormieForm, type AfterSubmitState } from '$lib/index.js';
 
@@ -31,8 +31,7 @@
 		{#snippet afterSubmitSnippet()}
 			{#if afterSubmitState}
 				<p style="color: {afterSubmitState.isSuccess ? 'green' : 'red'}">
-					<!-- eslint-disable-next-line -->
-					{@html afterSubmitState.message}
+					{ afterSubmitState.message}
 				</p>
 			{/if}
 		{/snippet}
@@ -47,4 +46,4 @@
 	section {
 		margin-inline: 2rem;
 	}
-</style>
+</style> -->

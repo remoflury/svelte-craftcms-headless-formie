@@ -1,67 +1,67 @@
-import { PUBLIC_CMS_API } from '$env/static/public';
-import { error } from '@sveltejs/kit';
-import type { PageLoad } from './$types.js';
+// import { PUBLIC_CMS_API } from '$env/static/public';
+// import { error } from '@sveltejs/kit';
+// import type { PageLoad } from './$types.js';
 
-const query = `
-  query PageQuery($uri: String) {
-  entry(uri: [$uri]) {
-    id
-    title
-    
-    ... on page_Entry {
-      
-      form {
-        id
-        handle
-      }
-    }
-  }
-}
-`;
+// const query = `
+//   query PageQuery($uri: String) {
+//   entry(uri: [$uri]) {
+//     id
+//     title
 
-type PageData = {
-	entry: {
-		id: string;
-		title: string;
-		form: {
-			id: string;
-			handle: string;
-		}[];
-	};
-};
+//     ... on page_Entry {
 
-export const load: PageLoad = async ({ fetch }) => {
-	const res = await fetch(PUBLIC_CMS_API, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			query,
-			variables: {
-				uri: '__home__'
-			}
-		})
-	});
+//       form {
+//         id
+//         handle
+//       }
+//     }
+//   }
+// }
+// `;
 
-	if (!res.ok) {
-		error(res.status, 'Error fetching data');
-	}
+// type PageData = {
+// 	entry: {
+// 		id: string;
+// 		title: string;
+// 		form: {
+// 			id: string;
+// 			handle: string;
+// 		}[];
+// 	};
+// };
 
-	const {
-		data,
-		errors
-	}: {
-		data: PageData;
-		errors: unknown;
-	} = await res.json();
+// export const load: PageLoad = async ({ fetch }) => {
+// 	const res = await fetch(PUBLIC_CMS_API, {
+// 		method: 'POST',
+// 		headers: {
+// 			'Content-Type': 'application/json'
+// 		},
+// 		body: JSON.stringify({
+// 			query,
+// 			variables: {
+// 				uri: '__home__'
+// 			}
+// 		})
+// 	});
 
-	if (errors) {
-		console.error({ errors });
-		error(400);
-	}
+// 	if (!res.ok) {
+// 		error(res.status, 'Error fetching data');
+// 	}
 
-	return {
-		data: data.entry
-	};
-};
+// 	const {
+// 		data,
+// 		errors
+// 	}: {
+// 		data: PageData;
+// 		errors: unknown;
+// 	} = await res.json();
+
+// 	if (errors) {
+// 		console.error({ errors });
+// 		error(400);
+// 	}
+
+// 	return {
+// 		data: data.entry
+// 	};
+// };
