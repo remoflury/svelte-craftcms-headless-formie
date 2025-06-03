@@ -1,6 +1,6 @@
 {
 	"name": "svelte-craftcms-headless-formie",
-	"version": "0.0.5",
+	"version": "0.0.51",
 	"author": "Remo Flury (https://remoflury.ch)",
 	"license": "MIT",
 	"description": "Svelte Package for using Craft CMS with the Formie Plugin in headless configuration",
