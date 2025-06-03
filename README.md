@@ -97,8 +97,9 @@ The `data-formie-field-*` attribute stands for the top html element of a given i
 - `data-formie-field-radio`
 - `data-formie-field-single-line-text`
 - `data-formie-recaptcha-hint`
+- `data-formie-field-error`
 
-Those data-attributes can be used to selectively target the fields.
+Those data-attributes can be used to selectively target the fields / elements.
 
 ```css
 [data-formie-field-email] {
@@ -112,7 +113,8 @@ When a submission is not returned with errors from Craft CMS, the regarding inpu
 This can be used to style invalid form-fields:
 
 ```css
-[data-invalid='true'] {
+[data-invalid='true'],
+[data-formie-field-error] {
 	color: red;
 }
 ```
