@@ -1,14 +1,18 @@
 <script lang="ts">
+	import type { FormStore } from '$lib/store.svelte.js';
 	import type { FieldProps } from '$lib/types/FieldTypes.js';
+	import FieldError from '../fieldError.svelte';
 	import Label from '../label.svelte';
 
 	type Props = {
 		item: FieldProps;
+		formStore: FormStore;
 	};
 
-	let { item }: Props = $props();
+	let { item, formStore }: Props = $props();
 
 	const field = $derived(item?.displayName == 'MultiLineText' ? item : null);
+	const error = $derived(formStore.errorByHandle(field?.handle));
 </script>
 
 {#if field}
@@ -24,6 +28,10 @@
 			rows="4"
 			cols="50"
 			required={field.required}
+			aria-invalid={!!error}
+			aria-errormessage={error}
 		></textarea>
+
+		<FieldError {error} />
 	</div>
 {/if}

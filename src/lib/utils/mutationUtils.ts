@@ -9,6 +9,7 @@ import gql from 'graphql-tag';
 import FormDataJson from 'form-data-json-convert';
 // @ts-expect-error no ts support
 import { flatMap, isPlainObject } from 'lodash-es';
+import type { FormieFetchDataProps } from '$lib/types/FormTypes.js';
 // import { base64 } from '@sveu/browser';
 
 export const getFormFieldMeta = (form: any) => {
@@ -25,11 +26,11 @@ export const getFormFieldMeta = (form: any) => {
 	return fields;
 };
 
-function createMutationHandle(form: any) {
+function createMutationHandle(form: FormieFetchDataProps['form']) {
 	return `save_${form.handle}_Submission`;
 }
 
-function createMutationTypes(form: any) {
+function createMutationTypes(form: FormieFetchDataProps['form']) {
 	const types = getFormFieldMeta(form).map(
 		({ handle, inputTypeName }: { handle: string; inputTypeName: string }) => {
 			return `$${handle}: ${inputTypeName}`;
@@ -37,14 +38,14 @@ function createMutationTypes(form: any) {
 	);
 
 	// Add in any captcha tokens generated when we queried the form.
-	form.captchas.forEach((captcha: any) => {
+	form.captchas.forEach((captcha: FormieFetchDataProps['form']['captchas'][number]) => {
 		types.push(`$${captcha.handle}: FormieCaptchaInput`);
 	});
 
 	return types.join(', ');
 }
 
-function createMutationValues(form: any, siteId?: number | string) {
+function createMutationValues(form: FormieFetchDataProps['form'], siteId?: number | string) {
 	const values = flatMap(getFormFieldMeta(form), 'handle').map((key: any) => {
 		return `${key}: $${key}`;
 	});
@@ -62,7 +63,7 @@ function createMutationValues(form: any, siteId?: number | string) {
 	return values.join(', ');
 }
 
-export const getFormMutation = (form: any, siteId?: number | string) => {
+export const getFormMutation = (form: FormieFetchDataProps['form'], siteId?: number | string) => {
 	const mutationTypes = createMutationTypes(form);
 	const mutationHandle = createMutationHandle(form);
 	const mutationValues = createMutationValues(form, siteId);

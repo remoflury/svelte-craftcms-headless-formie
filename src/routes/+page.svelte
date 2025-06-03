@@ -14,8 +14,8 @@
 	<FormieForm
 		handle={form[0].handle}
 		publicCmsApi={PUBLIC_CMS_API}
-		onsuccessfulsubmit={(message) => console.log(message)}
-		onerror={(message) => console.log(message)}
+		onsuccessfulsubmit={() => console.log('success')}
+		onerror={() => console.log('error')}
 		bind:isLoading
 		bind:submitButtonText
 		bind:afterSubmitState
