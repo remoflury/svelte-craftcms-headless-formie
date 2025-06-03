@@ -1,11 +1,6 @@
 <script lang="ts">
 	import type { AfterSubmitState } from '$lib/types/ComponentTypes.js';
-	import {
-		addRecaptcha,
-		areInputFieldsValid,
-		checkFieldConditions,
-		setAriaInvalid
-	} from '$lib/utils/formUtils.js';
+	import { addRecaptcha, areInputFieldsValid, checkFieldConditions } from '$lib/utils/formUtils.js';
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
 	import { onMount, type Snippet } from 'svelte';
 	import { getFormMutation, getMutationVariables } from '$lib/utils/mutationUtils.js';
@@ -20,6 +15,7 @@
 		FormieFetchProps,
 		FormiePagesProps
 	} from '$lib/types/FormTypes.js';
+	import { FormStore } from '$lib/store.svelte.js';
 
 	type Props = HTMLFormAttributes & {
 		handle: string;
@@ -65,6 +61,8 @@
 	let pages: FormiePagesProps[] = $state([]);
 	let form: HTMLFormElement | undefined = $state();
 	let recaptcha: ReCaptchaInstance | undefined = $state();
+	let formStore = new FormStore();
+	let formId = $derived(`${crypto.randomUUID()}-${formData?.data?.form.handle}`);
 
 	const query: string = FormQuery?.loc?.source?.body;
 
@@ -123,14 +121,14 @@
 			formData: Exclude<FormieFetchDataProps, undefined>,
 			siteId: number | string | undefined
 		) => {
+			// return early if recaptcha instance is not present and there is a recaptcha key
+			if (!recaptcha && recaptchaKey) return;
 			afterSubmitState = undefined;
 			e.preventDefault();
 			isLoading = true;
-			// return early if recaptcha instance is not present and there is a recaptcha key
-			if (!recaptcha && recaptchaKey) return;
 
 			if (!areInputFieldsValid(pages, pageIndex)) return;
-
+			formStore.clearErrors(); //clear the errorStates
 			addRecaptcha(recaptcha, formData, recaptchaKey);
 
 			const formMutation = getFormMutation(formData?.form, siteId);
@@ -159,7 +157,7 @@
 				const errorMessages: Record<string, string[]> = JSON.parse(
 					errors[0].message.replaceAll("'", '')
 				);
-				setAriaInvalid(Object.keys(errorMessages));
+				formStore.errors = errorMessages;
 
 				afterSubmitState = {
 					message: formData?.form?.settings?.errorMessageHtml,
@@ -203,7 +201,7 @@ Usage:
 	{#if formData && formData.data}
 		<form
 			bind:this={form}
-			id={formData.data.form.handle}
+			id={formId}
 			onsubmit={async (e) => await onSubmit(e, formData.data!, submitToSiteId)}
 			data-formie-form
 			{...rest}
@@ -217,7 +215,7 @@ Usage:
 							{#each row.rowFields as field (crypto.randomUUID())}
 								{#if checkFieldConditions(field.conditions, formFields)}
 									<div data-formie-field>
-										<Field {field} {updateFormFields} />
+										<Field {field} {updateFormFields} {formStore} />
 									</div>
 								{/if}
 							{/each}

@@ -88,3 +88,5 @@ export type CraftGraphQlErrorProps = {
 	}[];
 	message: string;
 };
+
+export type FormieErrorReturnObj = Record<string, string[]>;

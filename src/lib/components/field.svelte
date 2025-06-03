@@ -1,13 +1,15 @@
 <script lang="ts">
 	import type { FieldProps } from '$lib/types/FieldTypes.js';
+	import type { FormStore } from '$lib/store.svelte.js';
 	import { type Component } from 'svelte';
 
 	type Props = {
 		field: FieldProps;
+		formStore: FormStore;
 		updateFormFields: (handle: string, newValue: string) => void;
 	};
 
-	let { field, updateFormFields }: Props = $props();
+	let { field, updateFormFields, formStore }: Props = $props();
 
 	/**
 	 *
@@ -42,7 +44,11 @@
 	 */
 	const componentMap: Record<
 		string,
-		Component<{ item: FieldProps; updateFormFields: (handle: string, newValue: string) => void }>
+		Component<{
+			item: FieldProps;
+			updateFormFields: (handle: string, newValue: string) => void;
+			formStore: FormStore;
+		}>
 	> = {
 		SingleLineText: SingleLineText,
 		Radio: Radio,
@@ -61,6 +67,6 @@
 </script>
 
 {#if field.displayName && componentMap[field.displayName]}
-	{@const Field: Component<{ item: FieldProps; updateFormFields: (handle: string, newValue: string) => void }> = componentMap[field.displayName]}
-	<Field item={field} {updateFormFields} />
+	{@const Field: Component<{ item: FieldProps; updateFormFields: (handle: string, newValue: string) => void; formStore: FormStore }> = componentMap[field.displayName]}
+	<Field item={field} {updateFormFields} {formStore} />
 {/if}

@@ -1,15 +1,19 @@
 <script lang="ts">
+	import type { FormStore } from '$lib/store.svelte.js';
 	import type { FieldProps } from '$lib/types/FieldTypes.js';
+	import FieldError from '../fieldError.svelte';
 	import Label from '../label.svelte';
 
 	type Props = {
 		item: FieldProps;
 		updateFormFields: (handle: string, newValue: string) => void;
+		formStore: FormStore;
 	};
 
-	let { item, updateFormFields }: Props = $props();
+	let { item, updateFormFields, formStore }: Props = $props();
 
 	const field = $derived(item?.displayName == 'Radio' ? item : null);
+	const error = $derived(formStore.errorByHandle(field?.handle));
 
 	let group: string = $state('');
 
@@ -23,8 +27,8 @@
 </script>
 
 {#if field}
-	<div data-formie-field-radio class={field.cssClasses ?? ''}>
-		<Label required={field.required} for={field.handle}>{field.label}</Label>
+	<fieldset data-formie-field-radio class={field.cssClasses ?? ''}>
+		<Label tag="legend" required={field.required} for={field.handle}>{field.label}</Label>
 		{#each field.options as option, i (option.value)}
 			<div
 				class:opacity-60={option.disabled}
@@ -39,15 +43,16 @@
 					value={option.value}
 					checked={option.isDefault}
 					bind:group
-					required={field.required}
 					disabled={option.disabled}
 					onchange={() => {
 						updateFormFields(field.handle, group);
 					}}
+					required={field.required}
 				/>
 			</div>
 		{/each}
-	</div>
+		<FieldError {error} />
+	</fieldset>
 {/if}
 
 <style>
