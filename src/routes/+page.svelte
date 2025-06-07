@@ -1,23 +1,20 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import { PUBLIC_CMS_API } from '$env/static/public';
-	import { FormieForm, type AfterSubmitState } from '$lib/index.js';
+	import { FormieForm } from '$lib/index.js';
 
 	// let { data } = $props();
 
 	let isLoading = $state(false);
 	let submitButtonText = $state('');
-	let afterSubmitState: AfterSubmitState | undefined = $state();
 </script>
 
 <section>
 	<FormieForm
 		handle="testformular"
 		publicCmsApi={PUBLIC_CMS_API}
-		onsuccessfulsubmit={() => console.log('success')}
-		onerror={() => console.log('error')}
+		onaftersubmit={(e) => console.log(e)}
 		bind:isLoading
 		bind:submitButtonText
-		bind:afterSubmitState
 	>
 		{#snippet pagination({ currentIndex, totalPages, backBtn, nextBtn })}
 			<div>
@@ -38,12 +35,10 @@
 			<button>{submitButtonText}</button>
 		{/snippet}
 
-		{#snippet afterSubmitSnippet()}
-			{#if afterSubmitState}
-				<p style="color: {afterSubmitState.isSuccess ? 'green' : 'red'}">
-					{afterSubmitState.message}
-				</p>
-			{/if}
+		{#snippet afterSubmitSnippet({ state })}
+			<p style="color: {state.isSuccess ? 'green' : 'red'}">
+				{state.message}
+			</p>
 		{/snippet}
 
 		{#snippet errorSnippet()}
@@ -56,4 +51,4 @@
 	section {
 		margin-inline: 2rem;
 	}
-</style> -->
+</style>
