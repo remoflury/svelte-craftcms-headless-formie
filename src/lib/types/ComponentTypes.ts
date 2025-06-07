@@ -18,7 +18,7 @@ export type FormieFormProps = HTMLFormAttributes & {
 	recaptchaHint?: Snippet;
 	recaptchaKey?: string;
 	siteId?: string | number;
-	pagination: Snippet<
+	pagination?: Snippet<
 		[
 			{
 				currentIndex: number;
