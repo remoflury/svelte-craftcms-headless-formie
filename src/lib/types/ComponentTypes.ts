@@ -6,14 +6,13 @@ export type AfterSubmitState = { message: string | null; isSuccess: boolean };
 export type FormieFormProps = HTMLFormAttributes & {
 	publicCmsApi: string;
 	handle: string;
-	submitButtonText?: string;
 	isLoading?: boolean;
 	recaptchaKey?: string;
 	siteId?: string | number;
 	// events
 	onaftersubmit?: (d: AfterSubmitState) => void;
 	// Snippets
-	submitButton: Snippet;
+	submitButton: Snippet<[HTMLButtonAttributes & { text: string }]>;
 	skeletonSnippet?: Snippet;
 	errorSnippet?: Snippet;
 	afterSubmitSnippet?: Snippet<[{ state: AfterSubmitState }]>;

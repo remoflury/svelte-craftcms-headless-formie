@@ -26,7 +26,7 @@ In your svelte file, import the component. And add the form handle and the publi
 ```svelte
 <script lang="ts">
 	import { PUBLIC_CMS_API } from '$env/static/public';
-	import FormieForm from 'tbd';
+	import FormieForm from 'svelte-craftcms-headless-formie';
 </script>
 
 <FormieForm handle="your-form-handle" publicCmsApi={PUBLIC_CMS_API} />
@@ -44,21 +44,20 @@ You can pass in multiple snippets:
 
 ### Props
 
-| Prop                 | Description                                                                                                    | type                                                                 | default                     |
-| -------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------- |
-| `handle`             | the form handle                                                                                                | `string` (required)                                                  | -                           |
-| `submitButton`       | your custom submitButton (type="submit")                                                                       | `Snippet` (required)                                                 |  -                          |
-| `publicCmsApiKey`    | the cms api url, where the submission has to be sent to                                                        | `string` (required)                                                  | -                           |
-| `submitButtonText`   | bindable variable, which will update with the button text from craft / formie                                  | `string \| ''`                                                       | -                           |
-| `siteId`             | siteId, which the submission should be submitted to.                                                           | `string \| number \| undefined`                                      | `undefined`                 |
-| `recaptchaKey`       | if recaptcha is setup in formie, pass in the recaptcha key                                                     | `string \| undefined`                                                | undefined                   |
-| `isLoading`          | allows you to bind to a loading state during the submission                                                    | `boolean \| undefined`                                               | false                       |
-| `skeletonSnippet`    | renders a skeleton loader snippet                                                                              | `Snippet \| undefined`                                               | undefined                   |
-| `errorSnippet`       | renders an error snippet if an error is caught during inititial render                                         | `Snippet \| undefined`                                               | undefined                   |
-| `afterSubmitSnippet` | renders a snippet after the submission                                                                         | `Snippet \| undefined `                                              | undefined                   |
-| `pagination`         | Snippet used to display UI relevant with multistep forms                                                       | `Snippet`                                                            | undefined                   |
-| `recaptchaHint`      | renders a snippet as a hint for recaptcha. Will only be shown, if a recaptchaKey is provieded                  | `Snippet \| undefined `                                              | recaptchaHintSnippet.svelte |
-| `onaftersubmit`      | callback fired after submit. The event passed contains a message (defined in formie) aswell as the error state | `(message: string \| null, isSuccess: boolean) => void \| undefined` | undefined                   |
+| Prop                 | Description                                                                                                                                                                   | type                                                                 | default                     |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------- |
+| `handle`             | the form handle                                                                                                                                                               | `string` (required)                                                  | -                           |
+| `submitButton`       | your custom submitButton (type="submit")                                                                                                                                      | `Snippet` (required)                                                 |  -                          |
+| `publicCmsApiKey`    | the cms api url, where the submission has to be sent to                                                                                                                       | `string` (required)                                                  | -                           |
+| `siteId`             | siteId, which the submission should be submitted to.                                                                                                                          | `string \| number \| undefined`                                      | `undefined`                 |
+| `recaptchaKey`       | if recaptcha is setup in formie, pass in the recaptcha key                                                                                                                    | `string \| undefined`                                                | undefined                   |
+| `isLoading`          | allows you to bind to a loading state during the submission                                                                                                                   | `boolean \| undefined`                                               | false                       |
+| `skeletonSnippet`    | renders a skeleton loader snippet                                                                                                                                             | `Snippet \| undefined`                                               | undefined                   |
+| `afterSubmitSnippet` | renders a snippet after the submission. The message displayed will contain the elements from craft formie.                                                                    | `Snippet \| undefined `                                              | undefined                   |
+| `errorSnippet`       | renders an error snippet if an error is caught during inititial render. In contrary to `afterSubmitSnippet`, this Snippet will allow you to render totally custom components. | `Snippet \| undefined`                                               | undefined                   |
+| `pagination`         | Snippet used to display UI relevant with multistep forms                                                                                                                      | `Snippet`                                                            | undefined                   |
+| `recaptchaHint`      | renders a snippet as a hint for recaptcha. Will only be shown, if a recaptchaKey is provieded                                                                                 | `Snippet \| undefined `                                              | recaptchaHintSnippet.svelte |
+| `onaftersubmit`      | callback fired after submit. The event passed contains a message (defined in formie) aswell as the error state                                                                | `(message: string \| null, isSuccess: boolean) => void \| undefined` | undefined                   |
 
 ## Multistep forms
 
@@ -167,16 +166,14 @@ This can be used to style invalid form-fields:
 		this is a skeleton fallback
 	{/snippet}
 
-	{#snippet submitButton()}
-		<button>{submitButtonText}</button>
+	{#snippet submitButton({ text })}
+		<button>{text}</button>
 	{/snippet}
 
-	{#snippet afterSubmitSnippet()}
-		{#if afterSubmitState}
-			<p style="color: {afterSubmitState.isSuccess ? 'green' : 'red'}">
-				{@html afterSubmitState.message}
-			</p>
-		{/if}
+	{#snippet afterSubmitSnippet({ state })}
+		<p style="color: {state.isSuccess ? 'green' : 'red'}">
+			{state.message}
+		</p>
 	{/snippet}
 
 	{#snippet errorSnippet()}

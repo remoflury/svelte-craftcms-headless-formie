@@ -27,8 +27,6 @@
 		submitButton,
 		recaptchaKey,
 		publicCmsApi,
-		submitButtonText = $bindable(''),
-		// afterSubmitState = $bindable(undefined),
 		siteId: submitToSiteId = undefined,
 		pagination,
 		...rest
@@ -47,6 +45,7 @@
 	let formStore = new FormStore();
 	let formId = $derived(`${crypto.randomUUID()}-${formData?.data?.form.handle}`);
 	let afterSubmitState: AfterSubmitState | undefined = $state(undefined);
+	let submitButtonText: string | undefined = $state(undefined);
 
 	const query: string = FormQuery?.loc?.source?.body;
 
@@ -238,8 +237,8 @@ Usage:
 					}
 				})}
 			{/if}
-			{#if !afterSubmitState?.isSuccess && pageIndex + 1 === pages.length}
-				{@render submitButton()}
+			{#if !afterSubmitState?.isSuccess && pageIndex + 1 === pages.length && submitButtonText}
+				{@render submitButton({ text: submitButtonText })}
 			{/if}
 
 			{#if afterSubmitSnippet && afterSubmitState}

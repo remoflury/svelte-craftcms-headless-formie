@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { PUBLIC_CMS_API } from '$env/static/public';
 	import { FormieForm } from '$lib/index.js';
 
@@ -10,11 +10,10 @@
 
 <section>
 	<FormieForm
-		handle="testformular"
+		handle="multipage"
 		publicCmsApi={PUBLIC_CMS_API}
 		onaftersubmit={(e) => console.log(e)}
 		bind:isLoading
-		bind:submitButtonText
 	>
 		{#snippet pagination({ currentIndex, totalPages, backBtn, nextBtn })}
 			<div>
@@ -31,8 +30,8 @@
 			this is a skeleton fallback
 		{/snippet}
 
-		{#snippet submitButton()}
-			<button>{submitButtonText}</button>
+		{#snippet submitButton({ text })}
+			<button>{text}</button>
 		{/snippet}
 
 		{#snippet afterSubmitSnippet({ state })}
@@ -51,4 +50,4 @@
 	section {
 		margin-inline: 2rem;
 	}
-</style>
+</style> -->
