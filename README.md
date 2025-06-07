@@ -59,17 +59,7 @@ You can pass in multiple snippets:
 | `recaptchaHint`      | renders a snippet as a hint for recaptcha. Will only be shown, if a recaptchaKey is provieded                                     | `Snippet \| undefined `                          | recaptchaHintSnippet.svelte |
 | `onsuccessfulsubmit` | callback on a successful submit, gives back a message as string (defined in formie)                                               | `(message: string \| null) => void \| undefined` | undefined                   |
 | `onerror`            | callback on an unsuccessful submit, gives back a message as string (defined in formie)                                            | `(message: string \| null) => void \| undefined` | undefined                   |
-| `pagination`         | Snippet used to display UI relevant with multistep forms                                                                          | `Snippet<                                        |
-
-    	[
-    		{
-    			currentIndex: number;
-    			totalPages: number | undefined;
-    			backBtn: MultistepBtnProps | undefined;
-    			nextBtn: MultistepBtnProps | undefined;
-    		}
-    	]
-    >;` | undefined                   |
+| `pagination`         | Snippet used to display UI relevant with multistep forms                                                                          | `Snippet`                                        | undefined                   |
 
 ## Multistep forms
 
