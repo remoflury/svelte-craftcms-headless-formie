@@ -34,7 +34,8 @@
 						id="address1"
 						name="{field.handle}-address1"
 						placeholder={subfield.placeholder}
-						required={field.required}
+						required={subfield.required}
+						value={subfield.defaultValue}
 						aria-invalid={!!errorAddress1}
 						aria-errormessage={errorAddress1}
 					/>
@@ -51,7 +52,8 @@
 						id="address2"
 						name="{field.handle}-address2"
 						placeholder={subfield.placeholder}
-						required={field.required}
+						required={subfield.required}
+						value={subfield.defaultValue}
 						aria-invalid={!!errorAddress2}
 						aria-errormessage={errorAddress2}
 					/>
@@ -68,7 +70,8 @@
 						id="address3"
 						name="{field.handle}-address3"
 						placeholder={subfield.placeholder}
-						required={field.required}
+						required={subfield.required}
+						value={subfield.defaultValue}
 						aria-invalid={!!errorAddress3}
 						aria-errormessage={errorAddress3}
 					/>
@@ -85,7 +88,8 @@
 						id="city"
 						name="{field.handle}-city"
 						placeholder={subfield.placeholder}
-						required={field.required}
+						required={subfield.required}
+						value={subfield.defaultValue}
 						aria-invalid={!!errorCity}
 						aria-errormessage={errorCity}
 					/>
@@ -102,7 +106,8 @@
 						id="state"
 						name="{field.handle}-state"
 						placeholder={subfield.placeholder}
-						required={field.required}
+						required={subfield.required}
+						value={subfield.defaultValue}
 						aria-invalid={!!errorState}
 						aria-errormessage={errorState}
 					/>
@@ -119,6 +124,7 @@
 						id="zip"
 						name="{field.handle}-zip"
 						placeholder={subfield.placeholder}
+						value={subfield.defaultValue}
 						required={field.required}
 						aria-invalid={!!errorZip}
 						aria-errormessage={errorZip}
@@ -130,7 +136,7 @@
 			{#if subfield.displayName === 'AddressCountry' && 'options' in subfield && subfield['options']}
 				<div>
 					<Label for="country" required={subfield.required}>{subfield.label}</Label>
-
+					{console.log($state.snapshot(subfield))}
 					<select
 						id="country"
 						name="{field.handle}-country"
@@ -139,7 +145,8 @@
 						aria-errormessage={errorCountry}
 					>
 						{#each subfield.options as country (country.value)}
-							<option value={country.value} selected={'CH' == country.value}>{country.label}</option
+							<option value={country.value} selected={subfield.defaultValue == country.value}
+								>{country.label}</option
 							>
 						{/each}
 					</select>

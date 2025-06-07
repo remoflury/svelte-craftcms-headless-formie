@@ -25,11 +25,14 @@
 			id={field.handle}
 			name={field.handle}
 			placeholder={field.placeholder}
+			value={field.defaultValue}
 			rows="4"
 			cols="50"
 			required={field.required}
 			aria-invalid={!!error}
 			aria-errormessage={error}
+			minlength={field.limit && field.min ? field.min : undefined}
+			maxlength={field.limit && field.max ? field.max : undefined}
 		></textarea>
 
 		<FieldError {error} />

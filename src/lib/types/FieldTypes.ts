@@ -127,6 +127,7 @@ export type DropdownFieldProps = BaseFormFieldProps<'Dropdown'> & {
 		value: string;
 		isDefault: boolean;
 	}[];
+	multi: boolean;
 };
 
 export type EmailFieldProps = BaseFormFieldProps<'Email'>;
@@ -135,9 +136,17 @@ export type HeadingFieldProps = BaseFormFieldProps<'Heading'> & {
 	headingSize: Extract<keyof HTMLElementTagNameMap, `h${1 | 2 | 3 | 4 | 5 | 6}`>;
 };
 
-export type SingleLineFieldProps = BaseFormFieldProps<'SingleLineText'>;
+export type SingleLineFieldProps = BaseFormFieldProps<'SingleLineText'> & {
+	limit: boolean;
+	min: number | null;
+	max: number | null;
+};
 
-export type MultiLineTextFieldProps = BaseFormFieldProps<'MultiLineText'>;
+export type MultiLineTextFieldProps = BaseFormFieldProps<'MultiLineText'> & {
+	limit: boolean;
+	min: number | null;
+	max: number | null;
+};
 
 export type NumberFieldProps = BaseFormFieldProps<'Number'> & {
 	max: number;
@@ -159,12 +168,11 @@ export type NameFieldProps = BaseFormFieldProps<'Name'> & {
 export type PhoneFieldProps = BaseFormFieldProps<'Phone'> & {
 	countryDefaultValue: string;
 	countryEnabled: boolean;
-	countryAllowed: string;
-	countryOptions: {
-		label: string;
-		value: string;
-	}[];
+	countryAllowed: string; // unparsed JSON string
+	countryOptions: Omit<CountryAllowed, 'code'>[];
 };
+
+export type CountryAllowed = { code: string; label: string; value: string };
 
 export type HtmlProps = BaseFormFieldProps<'Html'> & {
 	htmlContent: string;

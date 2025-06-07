@@ -25,6 +25,7 @@
 			required={field.required}
 			aria-invalid={!!error}
 			aria-errormessage={error}
+			multiple={field.multi ? true : false}
 		>
 			{#each field.options as option (option.value)}
 				<option value={option.value} selected={option.isDefault}>{option.label}</option>

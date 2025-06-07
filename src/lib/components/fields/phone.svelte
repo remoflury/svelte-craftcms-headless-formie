@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { FormStore } from '$lib/store.svelte.js';
-	import type { FieldProps } from '$lib/types/FieldTypes.js';
+	import type { CountryAllowed, FieldProps } from '$lib/types/FieldTypes.js';
 	import FieldError from '../fieldError.svelte';
 	import Label from '../label.svelte';
 
@@ -13,6 +13,17 @@
 
 	const field = $derived(item?.displayName == 'Phone' ? item : null);
 	const error = $derived(formStore.errorByHandle(field?.handle));
+
+	const countryAllowed: CountryAllowed[] | undefined = $derived.by(() => {
+		if (!field?.countryAllowed) return undefined;
+		return JSON.parse(field.countryAllowed) as CountryAllowed[];
+	});
+
+	const selectableCountries = $derived.by(() => {
+		if (countryAllowed && countryAllowed.length) return countryAllowed;
+		if (field) return field.countryOptions;
+		return [];
+	});
 </script>
 
 {#if field}
@@ -26,7 +37,7 @@
 					required={field.required}
 					value={field.countryDefaultValue}
 				>
-					{#each field.countryOptions as option (option.value)}
+					{#each selectableCountries as option (option.value)}
 						<option value={option.value}>{option.label}</option>
 					{/each}
 				</select>

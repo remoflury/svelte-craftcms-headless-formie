@@ -19,7 +19,7 @@
 	<div data-formie-field-agree class={field.cssClasses ?? ''}>
 		<Label required={field.required}>{field.label}</Label>
 		{#if field.descriptionHtml}
-			<p class="">
+			<p>
 				<!-- eslint-disable-next-line -->
 				{@html field.descriptionHtml}
 			</p>

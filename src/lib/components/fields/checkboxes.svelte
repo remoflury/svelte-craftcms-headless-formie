@@ -19,15 +19,14 @@
 		<Label tag="legend" for={field.handle} required={field.required}>{field.label}</Label>
 		{#each field.options as option, i (option.value)}
 			<div
-				class=""
 				class:opacity-60={option.disabled}
 				class:cursor-pointer={option.disabled}
 				class:cursor-not-allowed={!option.disabled}
 			>
-				<Label for="{field.handle}[]" class="!font-normal">{option.label}</Label>
+				<Label for="{field.handle}[]">{option.label}</Label>
 				<input
 					type="checkbox"
-					class="mt-0"
+					class=""
 					id="{field.handle}-{i}"
 					name="{field.handle}[]"
 					value={option.value}
