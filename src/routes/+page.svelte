@@ -2,8 +2,7 @@
 	import { PUBLIC_CMS_API } from '$env/static/public';
 	import { FormieForm, type AfterSubmitState } from '$lib/index.js';
 
-	let { data } = $props();
-	const form = $derived(data.data.form);
+	// let { data } = $props();
 
 	let isLoading = $state(false);
 	let submitButtonText = $state('');
@@ -12,7 +11,7 @@
 
 <section>
 	<FormieForm
-		handle={form[0].handle}
+		handle="testformular"
 		publicCmsApi={PUBLIC_CMS_API}
 		onsuccessfulsubmit={() => console.log('success')}
 		onerror={() => console.log('error')}
@@ -20,6 +19,17 @@
 		bind:submitButtonText
 		bind:afterSubmitState
 	>
+		{#snippet pagination({ currentIndex, totalPages, backBtn, nextBtn })}
+			<div>
+				{currentIndex + 1} / {totalPages}
+				{#if backBtn}
+					<button type="button" onclick={backBtn.onclick}>{backBtn.text}</button>
+				{/if}
+				{#if nextBtn && currentIndex + 1 !== totalPages}
+					<button type="button" onclick={nextBtn.onclick}>{nextBtn.text}</button>
+				{/if}
+			</div>
+		{/snippet}
 		{#snippet skeletonSnippet()}
 			this is a skeleton fallback
 		{/snippet}
@@ -31,7 +41,7 @@
 		{#snippet afterSubmitSnippet()}
 			{#if afterSubmitState}
 				<p style="color: {afterSubmitState.isSuccess ? 'green' : 'red'}">
-					{ afterSubmitState.message}
+					{afterSubmitState.message}
 				</p>
 			{/if}
 		{/snippet}

@@ -59,6 +59,27 @@ You can pass in multiple snippets:
 | `recaptchaHint`      | renders a snippet as a hint for recaptcha. Will only be shown, if a recaptchaKey is provieded                                     | `Snippet \| undefined `                          | recaptchaHintSnippet.svelte |
 | `onsuccessfulsubmit` | callback on a successful submit, gives back a message as string (defined in formie)                                               | `(message: string \| null) => void \| undefined` | undefined                   |
 | `onerror`            | callback on an unsuccessful submit, gives back a message as string (defined in formie)                                            | `(message: string \| null) => void \| undefined` | undefined                   |
+| `pagination`         | Snippet used to display UI relevant with multistep forms                                                                          | `Snippet`                                        | undefined                   |
+
+## Multistep forms
+
+If you have a multistep form, use the multistep snippet, to display further information:
+
+```svelte
+{#snippet pagination({ currentIndex, totalPages, backBtn, nextBtn })}
+	<div>
+		{currentIndex + 1} / {totalPages}
+		{#if backBtn}
+			<button type="button" onclick={backBtn.onclick}>{backBtn.text}</button>
+		{/if}
+		{#if nextBtn && currentIndex + 1 !== totalPages}
+			<button type="button" onclick={nextBtn.onclick}>{nextBtn.text}</button>
+		{/if}
+	</div>
+{/snippet}
+```
+
+Be aware, that a `type="button"` for pagination buttons is necessary. Otherwise, the form will be submitted before reaching the end.
 
 ## Styling
 
