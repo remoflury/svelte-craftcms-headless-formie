@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { PUBLIC_CMS_API } from '$env/static/public';
 	import { FormieForm } from '$lib/index.js';
 
@@ -49,4 +49,4 @@
 	section {
 		margin-inline: 2rem;
 	}
-</style>
+</style> -->
