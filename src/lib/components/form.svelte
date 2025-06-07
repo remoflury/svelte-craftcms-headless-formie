@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FormieFormProps } from '$lib/types/ComponentTypes.js';
+	import type { AfterSubmitState, FormieFormProps } from '$lib/types/ComponentTypes.js';
 	import { addRecaptcha, areInputFieldsValid, checkFieldConditions } from '$lib/utils/formUtils.js';
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
 	import { onMount } from 'svelte';
@@ -18,18 +18,15 @@
 
 	let {
 		handle,
-		onsuccessfulsubmit,
-		onerror,
 		errorSnippet,
 		skeletonSnippet,
+		onaftersubmit,
 		isLoading = $bindable(false),
 		afterSubmitSnippet,
 		recaptchaHint = recaptchaHintSnippet,
 		submitButton,
 		recaptchaKey,
 		publicCmsApi,
-		submitButtonText = $bindable(''),
-		afterSubmitState = $bindable(undefined),
 		siteId: submitToSiteId = undefined,
 		pagination,
 		...rest
@@ -47,6 +44,8 @@
 	let recaptcha: ReCaptchaInstance | undefined = $state();
 	let formStore = new FormStore();
 	let formId = $derived(`${crypto.randomUUID()}-${formData?.data?.form.handle}`);
+	let afterSubmitState: AfterSubmitState | undefined = $state(undefined);
+	let submitButtonText: string | undefined = $state(undefined);
 
 	const query: string = FormQuery?.loc?.source?.body;
 
@@ -136,7 +135,6 @@
 					message: formData?.form?.settings?.submitActionMessageHtml,
 					isSuccess: true
 				};
-				onsuccessfulsubmit?.(afterSubmitState.message);
 			} else {
 				const errorMessages: Record<string, string[]> = JSON.parse(
 					errors[0].message.replaceAll("'", '')
@@ -150,8 +148,8 @@
 					message: formData?.form?.settings?.errorMessageHtml,
 					isSuccess: false
 				};
-				onerror?.(afterSubmitState.message);
 			}
+			onaftersubmit?.($state.snapshot(afterSubmitState));
 			isLoading = false;
 		}
 	);
@@ -239,12 +237,12 @@ Usage:
 					}
 				})}
 			{/if}
-			{#if !afterSubmitState?.isSuccess && pageIndex + 1 === pages.length}
-				{@render submitButton()}
+			{#if !afterSubmitState?.isSuccess && pageIndex + 1 === pages.length && submitButtonText}
+				{@render submitButton({ text: submitButtonText })}
 			{/if}
 
-			{#if afterSubmitSnippet}
-				{@render afterSubmitSnippet()}
+			{#if afterSubmitSnippet && afterSubmitState}
+				{@render afterSubmitSnippet({ state: afterSubmitState })}
 			{/if}
 		</form>
 		{#if recaptchaKey}
