@@ -25,7 +25,10 @@
 			placeholder={field.placeholder}
 			required={field.required}
 			aria-invalid={!!error}
+			value={field.defaultValue}
 			aria-errormessage={error}
+			minlength={field.limit && field.min ? field.min : undefined}
+			maxlength={field.limit && field.max ? field.max : undefined}
 		/>
 		<FieldError {error} />
 	</div>

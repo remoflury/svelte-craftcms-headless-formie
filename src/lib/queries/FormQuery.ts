@@ -92,9 +92,20 @@ export const FieldFragment = gql`
 				value
 				isDefault
 			}
+			multi
 		}
 		... on Field_Heading {
 			headingSize
+		}
+		... on Field_SingleLineText {
+			limit
+			min
+			max
+		}
+		... on Field_MultiLineText {
+			limit
+			min
+			max
 		}
 
 		... on Field_Name {

@@ -1,16 +1,15 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import { PUBLIC_CMS_API } from '$env/static/public';
 	import { FormieForm } from '$lib/index.js';
 
 	// let { data } = $props();
 
 	let isLoading = $state(false);
-	let submitButtonText = $state('');
 </script>
 
 <section>
 	<FormieForm
-		handle="multipage"
+		handle="testformular"
 		publicCmsApi={PUBLIC_CMS_API}
 		onaftersubmit={(e) => console.log(e)}
 		bind:isLoading
@@ -50,4 +49,4 @@
 	section {
 		margin-inline: 2rem;
 	}
-</style> -->
+</style>

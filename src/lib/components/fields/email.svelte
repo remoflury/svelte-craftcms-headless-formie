@@ -26,6 +26,7 @@
 			required={field.required}
 			aria-invalid={!!error}
 			aria-errormessage={error}
+			value={field.defaultValue}
 		/>
 		<FieldError {error} />
 	</div>

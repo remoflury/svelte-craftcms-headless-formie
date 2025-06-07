@@ -24,11 +24,12 @@
 			id={field.handle}
 			name={field.handle}
 			placeholder={field.placeholder}
+			value={field.defaultValue}
 			required={field.required}
-			min={field.minValue !== null ? field.minValue : undefined}
-			max={field.maxValue !== null ? field.maxValue : undefined}
 			aria-invalid={!!error}
 			aria-errormessage={error}
+			min={field.minValue !== null ? field.minValue : undefined}
+			max={field.maxValue !== null ? field.maxValue : undefined}
 		/>
 		<FieldError {error} />
 	</div>
