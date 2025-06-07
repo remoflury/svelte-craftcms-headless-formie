@@ -19,8 +19,6 @@
 	const errorState = $derived(formStore.errorByHandle(`${field?.handle}.state`));
 	const errorZip = $derived(formStore.errorByHandle(`${field?.handle}.zip`));
 	const errorCountry = $derived(formStore.errorByHandle(`${field?.handle}.country`));
-
-	$inspect(field);
 </script>
 
 {#if field}
