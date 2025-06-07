@@ -1,13 +1,12 @@
 <script lang="ts">
-	import type { AfterSubmitState } from '$lib/types/ComponentTypes.js';
+	import type { FormieFormProps } from '$lib/types/ComponentTypes.js';
 	import { addRecaptcha, areInputFieldsValid, checkFieldConditions } from '$lib/utils/formUtils.js';
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
-	import { onMount, type Snippet } from 'svelte';
+	import { onMount } from 'svelte';
 	import { getFormMutation, getMutationVariables } from '$lib/utils/mutationUtils.js';
 	import { FormQuery } from '$lib/queries/FormQuery.js';
 	import { recaptchaHintSnippet } from './recaptchaHintSnippet.svelte';
 	import Field from './field.svelte';
-	import type { HTMLFormAttributes } from 'svelte/elements';
 	import type {
 		CraftGraphQlErrorProps,
 		FormField,
@@ -17,22 +16,6 @@
 	} from '$lib/types/FormTypes.js';
 	import { FormStore } from '$lib/store.svelte.js';
 
-	type Props = HTMLFormAttributes & {
-		handle: string;
-		submitButton: Snippet;
-		submitButtonText?: string;
-		isLoading?: boolean;
-		onsuccessfulsubmit?: (message: string | null) => void;
-		onerror?: (message: string | null) => void;
-		skeletonSnippet?: Snippet;
-		errorSnippet?: Snippet;
-		afterSubmitState?: AfterSubmitState;
-		afterSubmitSnippet?: Snippet; // component, which can be shown after submission
-		recaptchaHint?: Snippet;
-		recaptchaKey?: string;
-		publicCmsApi: string;
-		siteId?: string | number;
-	};
 	let {
 		handle,
 		onsuccessfulsubmit,
@@ -48,8 +31,9 @@
 		submitButtonText = $bindable(''),
 		afterSubmitState = $bindable(undefined),
 		siteId: submitToSiteId = undefined,
+		pagination,
 		...rest
-	}: Props = $props();
+	}: FormieFormProps = $props();
 
 	const variables = $derived({
 		handle
@@ -158,6 +142,9 @@
 					errors[0].message.replaceAll("'", '')
 				);
 				formStore.errors = errorMessages;
+				console.error('Error', errorMessages);
+
+				console.log(errors);
 
 				afterSubmitState = {
 					message: formData?.form?.settings?.errorMessageHtml,
@@ -168,6 +155,20 @@
 			isLoading = false;
 		}
 	);
+
+	/**
+	 * @function goToFormPage
+	 * @description
+	 * goes to a given site by index
+	 *
+	 * @param targetIndex
+	 * @returns void
+	 */
+	const goToFormPage = (targetIndex: number) => {
+		if (targetIndex < 0 || targetIndex === pageIndex || targetIndex > pages.length) return;
+		if (!areInputFieldsValid(pages, pageIndex)) return;
+		pageIndex = targetIndex;
+	};
 
 	onMount(async () => {
 		if (!recaptchaKey) return;
@@ -223,18 +224,32 @@ Usage:
 					{/if}
 				</div>
 			{/each}
-			{#if !afterSubmitState?.isSuccess}
+
+			{#if !afterSubmitState?.isSuccess && pages.length > 1}
+				{@render pagination?.({
+					currentIndex: pageIndex,
+					totalPages: pages.length,
+					backBtn: {
+						text: pages[pageIndex].settings.backButtonLabel,
+						onclick: () => goToFormPage?.(pageIndex - 1)
+					},
+					nextBtn: {
+						text: pages[pageIndex].settings.submitButtonLabel,
+						onclick: () => goToFormPage?.(pageIndex + 1)
+					}
+				})}
+			{/if}
+			{#if !afterSubmitState?.isSuccess && pageIndex + 1 === pages.length}
 				{@render submitButton()}
 			{/if}
 
 			{#if afterSubmitSnippet}
 				{@render afterSubmitSnippet()}
 			{/if}
-
-			{#if recaptchaKey}
-				{@render recaptchaHint?.()}
-			{/if}
 		</form>
+		{#if recaptchaKey}
+			{@render recaptchaHint?.()}
+		{/if}
 	{/if}
 {:catch}
 	{#if errorSnippet}

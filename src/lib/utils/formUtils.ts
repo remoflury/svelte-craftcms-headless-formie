@@ -118,7 +118,7 @@ export const addRecaptcha = async (
  */
 export const areInputFieldsValid = (pages: { id: string }[], pageIndex: number): boolean => {
 	const page = document.getElementById(pages[pageIndex].id) as HTMLFormElement;
-	const formFields = page.querySelectorAll('input, select, textarea');
+	const formFields = [...page.querySelectorAll('input, select, textarea')];
 	let isValid = true;
 	formFields.forEach((field) => {
 		if (!(field as HTMLInputElement).checkValidity()) {
