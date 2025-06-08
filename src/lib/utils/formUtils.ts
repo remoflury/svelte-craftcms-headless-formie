@@ -1,5 +1,16 @@
-import type { FormieFetchDataProps } from '$lib/types/FormTypes.js';
+import type { FormField, FormieFetchDataProps, FormiePagesProps } from '$lib/types/FormTypes.js';
 import type { ReCaptchaInstance } from 'recaptcha-v3';
+
+type ConditionParsed = {
+	conditionRule: string;
+	showRule: string;
+	conditions: {
+		id: string;
+		condition: string;
+		field: string;
+		value: string;
+	}[];
+};
 
 /**
  * Überprüft die Bedingungen für ein Formularfeld und gibt `true` oder `false` zurück,
@@ -9,15 +20,10 @@ import type { ReCaptchaInstance } from 'recaptcha-v3';
  * @param {Array} formFields - Array der aktuellen Feldwerte
  * @returns {boolean} - `true`, wenn die Bedingungen erfüllt sind, sonst `false`
  */
-export const checkFieldConditions = (
-	conditionsStr: string | null,
-	formFields: { handle: string; value: string }[]
-) => {
-	console.log(conditionsStr);
-	if (!conditionsStr) return true;
+export const checkFieldConditions = (conditionsStr: string | null, formFields: FormField[]) => {
 	if (!conditionsStr) return true;
 	// Parse the conditions JSON
-	const conditions = JSON.parse(conditionsStr);
+	const conditions: ConditionParsed = JSON.parse(conditionsStr);
 
 	// Falls keine Bedingungen vorliegen, das Feld anzeigen
 	if (!conditions || !conditions.conditions) return true;
@@ -40,6 +46,7 @@ export const checkFieldConditions = (
 		if (condition.condition === '!=' && fieldValue === condition.value) {
 			return false;
 		}
+
 		// Zusätzliche Vergleichsoperatoren (z.B. `<`, `>`) können hier ergänzt werden
 	}
 
@@ -113,7 +120,7 @@ export const addRecaptcha = async (
  * @description checks the validity of all form fields of the current form page
  * @returns boolean
  */
-export const areInputFieldsValid = (pages: { id: string }[], pageIndex: number): boolean => {
+export const areInputFieldsValid = (pages: FormiePagesProps[], pageIndex: number): boolean => {
 	const page = document.getElementById(pages[pageIndex].id) as HTMLFormElement;
 	const formFields = [...page.querySelectorAll('input, select, textarea')] as (
 		| HTMLInputElement

@@ -114,8 +114,8 @@
 			formStore.clearErrors(); //clear the errorStates
 			addRecaptcha(recaptcha, formData, recaptchaKey);
 
-			const formMutation = getFormMutation(formData?.form, siteId);
-			const formDataVariables = await getMutationVariables(formData?.form, form);
+			const formMutation = getFormMutation(formData.form, siteId);
+			const formDataVariables = await getMutationVariables(formData.form, form);
 
 			const response = await fetch(publicCmsApi, {
 				method: 'POST',

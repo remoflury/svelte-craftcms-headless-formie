@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { RecaptchaProps } from '$lib/types/FormTypes.js';
 //
 // Credit to Dave Stockley (magicspon)
 // https://github.com/magicspon
@@ -7,14 +7,14 @@
 import { gql } from 'graphql-tag';
 // @ts-expect-error no ts support
 import FormDataJson from 'form-data-json-convert';
-// @ts-expect-error no ts support
 import { flatMap, isPlainObject } from 'lodash-es';
 import type { FormieFetchDataProps } from '$lib/types/FormTypes.js';
+import type { FieldProps } from '$lib/types/FieldTypes.js';
 // import { base64 } from '@sveu/browser';
 
-export const getFormFieldMeta = (form: any) => {
-	const allRows = flatMap(form.pages, 'rows');
-	const allFields = flatMap(allRows, 'rowFields');
+export const getFormFieldMeta = (form: FormieFetchDataProps['form']) => {
+	const allRows: { rowFields: FieldProps[] }[] = flatMap(form.pages, 'rows');
+	const allFields: FieldProps[] = flatMap(allRows, 'rowFields');
 
 	const fields = flatMap(
 		allFields,
@@ -46,12 +46,12 @@ function createMutationTypes(form: FormieFetchDataProps['form']) {
 }
 
 function createMutationValues(form: FormieFetchDataProps['form'], siteId?: number | string) {
-	const values = flatMap(getFormFieldMeta(form), 'handle').map((key: any) => {
+	const values = flatMap(getFormFieldMeta(form), 'handle').map((key: string) => {
 		return `${key}: $${key}`;
 	});
 
 	// Add in any captcha tokens generated when we queried the form.
-	form.captchas.forEach((captcha: any) => {
+	form.captchas.forEach((captcha: RecaptchaProps) => {
 		values.push(`${captcha.handle}: $${captcha.handle}`);
 	});
 
@@ -77,12 +77,16 @@ export const getFormMutation = (form: FormieFetchDataProps['form'], siteId?: num
     `;
 };
 
-export const getMutationVariables = async (form: any, el: any) => {
+export const getMutationVariables = async (
+	form: FormieFetchDataProps['form'],
+	el: HTMLFormElement | undefined
+) => {
 	const formData = new FormData(el);
 	const object = FormDataJson.toJson(el);
 	const mutationTypes = getFormFieldMeta(form);
-
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	function groupFields(object: any, fieldName: string) {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const groupedFields: any = {};
 		Object.keys(object).forEach((key) => {
 			if (key.startsWith(`${fieldName}-`)) {
@@ -94,6 +98,7 @@ export const getMutationVariables = async (form: any, el: any) => {
 		return groupedFields;
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const getBase64 = (file: any) => {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
@@ -182,6 +187,7 @@ export const getMutationVariables = async (form: any, el: any) => {
 				value = Object.values(value);
 			}
 
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			value = value.map((item: any) => {
 				return parseInt(item, 10);
 			});
@@ -193,7 +199,7 @@ export const getMutationVariables = async (form: any, el: any) => {
 			if (isPlainObject(value)) {
 				value = Object.values(value);
 			}
-
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			value = value.map((item: any) => {
 				return Number(item);
 			});
@@ -204,7 +210,7 @@ export const getMutationVariables = async (form: any, el: any) => {
 	}
 
 	// Add in any captcha tokens generated when we queried the form.
-	form.captchas.forEach((captcha: any) => {
+	form.captchas.forEach((captcha: RecaptchaProps) => {
 		object[captcha.handle] = {
 			name: captcha.name,
 			value: captcha.value
