@@ -143,25 +143,16 @@ This can be used to style invalid form-fields:
 
 ```svelte
 <script lang="ts">
-	import { PUBLIC_CMS_API } from '$env/static/public';
 	import { FormieForm } from '$lib/index.js';
 
-	let { data } = $props();
-	const form = $derived(data.data.form);
 	let isLoading = $state(false);
-	let submitButtonText = $state('');
-	let afterSubmitState: AfterSubmitState | undefined = $state();
 </script>
 
 <FormieForm
-	handle={form[0].handle}
-	publicCmsApi={PUBLIC_CMS_API}
-	recaptchaKey={PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY}
-	onsuccessfulsubmit={(message) => console.log(message)}
-	onerror={(message) => console.log(message)}
+	handle="your-form-handle"
+	publicCmsApi="https://your-graphql-endpoint.dev"
+	onaftersubmit={(e) => console.log(e)}
 	bind:isLoading
-	bind:submitButtonText
-	bind:afterSubmitState
 >
 	{#snippet skeletonSnippet()}
 		this is a skeleton fallback
