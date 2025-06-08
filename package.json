@@ -1,6 +1,6 @@
 {
 	"name": "svelte-craftcms-headless-formie",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"author": "Remo Flury (https://remoflury.ch)",
 	"license": "MIT",
 	"description": "Svelte Package for using Craft CMS with the Formie Plugin in headless configuration",
@@ -24,7 +24,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"ci:publish": "npm run build && npx @changesets/cli"
+		"ci:publish": "npm run build && npx @changesets/cli && npx changesets version"
 	},
 	"files": [
 		"dist",
