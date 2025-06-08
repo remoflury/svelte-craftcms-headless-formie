@@ -4,7 +4,7 @@
 // https://github.com/magicspon
 //
 
-import gql from 'graphql-tag';
+import { gql } from 'graphql-tag';
 // @ts-expect-error no ts support
 import FormDataJson from 'form-data-json-convert';
 // @ts-expect-error no ts support

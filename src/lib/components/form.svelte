@@ -47,7 +47,7 @@
 	let afterSubmitState: AfterSubmitState | undefined = $state(undefined);
 	let submitButtonText: string | undefined = $state(undefined);
 
-	const query: string = FormQuery?.loc?.source?.body;
+	const query: string = FormQuery?.loc?.source?.body ?? '';
 
 	let options = $derived({
 		method: 'POST',

@@ -1,16 +1,15 @@
-<!-- <script lang="ts">
-	import { PUBLIC_CMS_API } from '$env/static/public';
+<script lang="ts">
 	import { FormieForm } from '$lib/index.js';
 
-	// let { data } = $props();
+	let { data } = $props();
 
 	let isLoading = $state(false);
 </script>
 
 <section>
 	<FormieForm
-		handle="testformular"
-		publicCmsApi={PUBLIC_CMS_API}
+		handle={data.data.form[0].handle}
+		publicCmsApi="https://craft-test.ddev.site/api"
 		onaftersubmit={(e) => console.log(e)}
 		bind:isLoading
 	>
@@ -49,4 +48,4 @@
 	section {
 		margin-inline: 2rem;
 	}
-</style> -->
+</style>

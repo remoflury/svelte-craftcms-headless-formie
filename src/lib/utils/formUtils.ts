@@ -1,3 +1,4 @@
+import type { FormieFetchDataProps } from '$lib/types/FormTypes.js';
 import type { ReCaptchaInstance } from 'recaptcha-v3';
 
 /**
@@ -12,6 +13,7 @@ export const checkFieldConditions = (
 	conditionsStr: string | null,
 	formFields: { handle: string; value: string }[]
 ) => {
+	console.log(conditionsStr);
 	if (!conditionsStr) return true;
 	// Parse the conditions JSON
 	const conditions = JSON.parse(conditionsStr);
@@ -42,11 +44,6 @@ export const checkFieldConditions = (
 
 	// Wenn alle Bedingungen erfüllt sind, true zurückgeben
 	return true;
-};
-
-export const getInputText = (label: string, placeholder: string | null = '', required = false) => {
-	const text = `${label || placeholder || ''}${required ? ' *' : ''}`;
-	return text;
 };
 
 /**
@@ -96,10 +93,9 @@ export const upsert = (array: any[], element: { [key: string]: string }) => {
  * Adds recaptcha validation to the formData if a key is provided
  * @returns void
  */
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 export const addRecaptcha = async (
 	recaptcha: ReCaptchaInstance | undefined,
-	formData: any,
+	formData: FormieFetchDataProps,
 	recaptchaKey: string | undefined
 ) => {
 	if (!recaptchaKey || !recaptcha) return;
@@ -118,11 +114,28 @@ export const addRecaptcha = async (
  */
 export const areInputFieldsValid = (pages: { id: string }[], pageIndex: number): boolean => {
 	const page = document.getElementById(pages[pageIndex].id) as HTMLFormElement;
-	const formFields = [...page.querySelectorAll('input, select, textarea')];
+	const formFields = [...page.querySelectorAll('input, select, textarea')] as (
+		| HTMLInputElement
+		| HTMLSelectElement
+		| HTMLTextAreaElement
+	)[];
+	return checkValidity(formFields);
+};
+
+/**
+ * @function checkValidity
+ * @description
+ * Checks the validity form a passed in from HTML ELements Array
+ * @param elems
+ * @returns boolean
+ */
+export const checkValidity = (
+	elems: (HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)[]
+) => {
 	let isValid = true;
-	formFields.forEach((field) => {
-		if (!(field as HTMLInputElement).checkValidity()) {
-			(field as HTMLInputElement).reportValidity();
+	elems.forEach((field) => {
+		if (!field.checkValidity()) {
+			field.reportValidity();
 			isValid = false;
 		}
 	});
