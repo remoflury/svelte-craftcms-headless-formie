@@ -16,7 +16,8 @@ export type FieldProps =
 	| RadioFieldProps
 	| SingleLineFieldProps
 	| DateFieldProps
-	| HiddenFieldProps;
+	| HiddenFieldProps
+	| FileUploadProps;
 
 type Attributes = {
 	label: string;

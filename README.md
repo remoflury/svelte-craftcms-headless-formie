@@ -115,6 +115,7 @@ The `data-formie-field-*` attribute stands for the top html element of a given i
 - `data-formie-field-phone`
 - `data-formie-field-radio`
 - `data-formie-field-single-line-text`
+- `data-formie-field-fileupload`
 - `data-formie-recaptcha-hint`
 - `data-formie-field-error`
 
@@ -199,3 +200,5 @@ Currently, only the following formie Fields are supported:
 - Phone Number
 - Radio Buttons
 - Single-line Text
+
+Be sure to enable / disable those fields accordingly in your formie settings.
