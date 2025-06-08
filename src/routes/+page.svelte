@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { FormieForm } from '$lib/index.js';
 
-	let { data } = $props();
+	// let { data } = $props();
 
 	let isLoading = $state(false);
 </script>
 
 <section>
 	<FormieForm
-		handle={data.data.form[0].handle}
+		handle="testformular"
 		publicCmsApi="https://craft-test.ddev.site/api"
 		onaftersubmit={(e) => console.log(e)}
 		bind:isLoading
