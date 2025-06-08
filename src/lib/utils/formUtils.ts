@@ -15,6 +15,7 @@ export const checkFieldConditions = (
 ) => {
 	console.log(conditionsStr);
 	if (!conditionsStr) return true;
+	if (!conditionsStr) return true;
 	// Parse the conditions JSON
 	const conditions = JSON.parse(conditionsStr);
 

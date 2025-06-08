@@ -49,9 +49,18 @@ describe('formUtils', () => {
 	});
 
 	test.concurrent('checkFieldConditions', () => {
+		const formFields = [
+			{ handle: 'singleLineText', value: '' },
+			{ handle: 'multiline', value: '' }
+		];
 		const mockConditions = '{"showRule":"show","conditionRule":"all","conditions":[]}';
-		const isValid = checkFieldConditions(mockConditions, []);
-
+		const isValid = checkFieldConditions(mockConditions, formFields);
 		expect(isValid).toEqual(true);
+
+		const mockConditions2 =
+			'{"showRule":"show","conditionRule":"all","conditions":[{"id":"new6057-2230","field":"{field:multiline}","condition":"startsWith","value":"a"}]}';
+		const isValid2 = checkFieldConditions(mockConditions2, formFields);
+
+		expect(isValid2).toEqual(true);
 	});
 });
