@@ -136,7 +136,6 @@
 			{#if subfield.displayName === 'AddressCountry' && 'options' in subfield && subfield['options']}
 				<div>
 					<Label for="country" required={subfield.required}>{subfield.label}</Label>
-					{console.log($state.snapshot(subfield))}
 					<select
 						id="country"
 						name="{field.handle}-country"

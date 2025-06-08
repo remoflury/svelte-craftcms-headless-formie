@@ -46,7 +46,7 @@ type FormiePagesSettingsProps = {
 	enablePageConditions: boolean;
 };
 
-type RecaptchaProps = {
+export type RecaptchaProps = {
 	handle: string;
 	value: string;
 	name: string;
