@@ -108,7 +108,6 @@ export const getMutationVariables = async (
 	};
 
 	for (const info of mutationTypes) {
-		// console.log('info', info)
 		const { handle, inputTypeName } = info;
 		let value = object[handle];
 
@@ -125,9 +124,6 @@ export const getMutationVariables = async (
 					// const base64Value = base64(fileInputValue)
 					const base64Value = await getBase64(fileInputValue); // Wait for the base64 conversion
 					object[info.handle] = [{ fileData: base64Value, filename: fileInputValue.name }]; // Assign the base64 string to the object
-
-					console.log('object', object);
-					console.log('info.handle', info.handle);
 				} catch (error) {
 					console.error('Error converting file to base64:', error);
 				}
@@ -218,7 +214,6 @@ export const getMutationVariables = async (
 		};
 	});
 
-	console.log('ooobj', object);
 	return object;
 };
 

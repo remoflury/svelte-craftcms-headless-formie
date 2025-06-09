@@ -123,9 +123,6 @@
 			const formMutation = getFormMutation(formData.form, siteId);
 			const formDataVariables = await getMutationVariables(formData.form, form);
 
-			console.log('query', formMutation.loc?.source.body);
-			console.log('variables', JSON.stringify(formDataVariables));
-
 			const response = await fetch(publicCmsApi, {
 				method: 'POST',
 				headers: {
