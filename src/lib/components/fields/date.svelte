@@ -12,7 +12,7 @@
 	let { item, formStore }: Props = $props();
 
 	const field = $derived(item?.displayName == 'Date' ? item : null);
-	const error = $derived(formStore.errorByHandle(field?.handle));
+	const error = $derived(formStore.getErrorByHandle(field?.handle));
 
 	const type: 'time' | 'date' | 'datetime-local' | null = $derived.by(() => {
 		const enabledFields = field?.nestedRows?.[0].rowFields?.filter((r) => r.enabled) || [];

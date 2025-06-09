@@ -12,7 +12,7 @@
 	let { item, formStore }: Props = $props();
 
 	const field = $derived(item?.displayName == 'SingleLineText' ? item : null);
-	const error = $derived(formStore.errorByHandle(field?.handle));
+	const error = $derived(formStore.getErrorByHandle(field?.handle));
 </script>
 
 {#if field}

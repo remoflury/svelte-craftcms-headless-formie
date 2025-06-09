@@ -13,7 +13,9 @@
 	let { item, formStore }: Props = $props();
 
 	const field = $derived(item?.displayName == 'FileUpload' ? item : null);
-	const error = $derived(formStore.errorByHandle(field?.handle));
+	const error = $derived(formStore.getErrorByHandle(field?.handle));
+	let inputEl: HTMLInputElement | undefined = $state();
+	let files: FileList | undefined = $state();
 	const multipleAllowed: true | undefined = $derived.by(() => {
 		if (!field) return undefined;
 		if (field.limitFiles !== null && parseInt(field.limitFiles) == 0) return undefined;
@@ -29,21 +31,70 @@
 	/**
 	 * @function convertFileSizeToMb
 	 * @param input
+	 * @returns number | undefined
 	 */
+	const convertFileSizeToMb = (input: number): number => {
+		return input * 1024 * 1024;
+	};
 
-	//  const streamToText = async (blob) => {
-	//     const readableStream = await blob.getReader();
-	//     const chunk = await readableStream.read();
+	/**
+	 * @function handleChange
+	 * @desription
+	 * when a file is inserted, it is checked wether the min or max file size applies
+	 * applies errorHandling with the form store
+	 * @param minFileSize
+	 * @param maxFileSize
+	 * @param maxFileCount
+	 * @returns void
+	 */
+	const handleChange = () => {
+		formStore.clearErrors();
+		if (!field) return;
+		if (!files) return;
+		if (!field.sizeMinLimit && !field.sizeLimit && !field.limitFiles) return;
+		const fileLimit = field.limitFiles ? parseInt(field.limitFiles) : null;
+		const sizeMinLimit = field.sizeMinLimit ? parseInt(field.sizeMinLimit) : null;
+		const sizeLimit = field.sizeLimit ? parseInt(field.sizeLimit) : null;
 
-	//     return new TextDecoder('utf-8').decode(chunk.value);
-	//   };
+		// check for maximum file limits
+		if (fileLimit && files.length > fileLimit) {
+			formStore.setErrorByHandle(field.handle, `Max. Files: ${fileLimit}`);
+			clearInputField();
 
-	//   const bufferToText = (buffer) => {
-	//     const bufferByteLength = buffer.byteLength;
-	//     const bufferUint8Array = new Uint8Array(buffer, 0, bufferByteLength);
+			return;
+		}
 
-	//     return new TextDecoder().decode(bufferUint8Array);
-	//   };
+		// check for minimum file size
+		if (sizeMinLimit) {
+			[...files].forEach((file) => {
+				if (file.size < convertFileSizeToMb(sizeMinLimit)) {
+					formStore.setErrorByHandle(field.handle, `Min. File Size: ${sizeMinLimit}MB`);
+					clearInputField();
+
+					return;
+				}
+			});
+		}
+		if (sizeLimit) {
+			[...files].forEach((file) => {
+				if (file.size > convertFileSizeToMb(sizeLimit)) {
+					formStore.setErrorByHandle(field.handle, `Max. File Size: ${sizeLimit}MB`);
+					clearInputField();
+					return;
+				}
+			});
+		}
+	};
+
+	/**
+	 * @function clearInputField
+	 * @description
+	 * manually sets the input fields values to empty
+	 */
+	const clearInputField = () => {
+		if (inputEl) inputEl.value = '';
+		files = undefined;
+	};
 </script>
 
 {#if field}
@@ -59,6 +110,9 @@
 			aria-errormessage={error}
 			accept={getAllowedFileTypes(field.allowedKinds || [])}
 			multiple={multipleAllowed}
+			bind:files
+			bind:this={inputEl}
+			onchange={handleChange}
 		/>
 		<FieldError {error} />
 	</div>

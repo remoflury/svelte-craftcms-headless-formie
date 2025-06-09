@@ -35,12 +35,21 @@ export class FormStore {
 		return this.#errors;
 	}
 
-	errorByHandle(handle: string | null | undefined) {
-		// console.log({handle})
+	getErrorByHandle(handle: string | null | undefined) {
 		if (!handle) return undefined;
 		const obj = this.#errors;
-		// console.log({obj})
 		if (!obj || !obj[handle] || obj[handle].length === 0) return undefined;
 		return obj[handle][0];
+	}
+
+	setErrorByHandle(handle: string | null | undefined, message: string) {
+		if (!handle) return;
+		const obj = this.#errors;
+		if (!obj || !obj[handle]) return (this.#errors = { [handle]: [message] });
+		// if (obj && obj[handle]) {
+		// 	const prevErr: string[] = obj[handle]
+		// 	const newErrors: string[] = [message, ...prevErr]
+
+		// }
 	}
 }
