@@ -32,6 +32,7 @@
 	import Phone from './fields/phone.svelte';
 	import Date from './fields/date.svelte';
 	import Heading from './fields/heading.svelte';
+	import FileUpload from './fields/fileUpload.svelte';
 
 	/**
 	 *
@@ -62,7 +63,8 @@
 		Agree: AgreeField,
 		Date: Date,
 		Address: Address,
-		Heading: Heading
+		Heading: Heading,
+		FileUpload: FileUpload
 	};
 </script>
 

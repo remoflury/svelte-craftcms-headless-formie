@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { checkFieldConditions, checkValidity, upsert } from './formUtils.js';
+import { checkFieldConditions, checkValidity, isValidJSON, upsert } from './formUtils.js';
 
 const createInputEl = (
 	tag: 'input' | 'textarea' | 'select',
@@ -62,5 +62,13 @@ describe('formUtils', () => {
 		const isValid2 = checkFieldConditions(mockConditions2, formFields);
 
 		expect(isValid2).toEqual(true);
+	});
+
+	test.concurrent('isValidJson', () => {
+		expect(isValidJSON('{"name":"Adam","age":20}')).toEqual(true);
+		expect(isValidJSON('{"name":"Adam",age:"20"}')).toEqual(false);
+		expect(isValidJSON('a simple string')).toEqual(false);
+		expect(isValidJSON(undefined)).toEqual(false);
+		expect(isValidJSON(null)).toEqual(false);
 	});
 });

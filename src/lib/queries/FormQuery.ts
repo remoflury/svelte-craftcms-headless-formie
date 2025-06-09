@@ -108,6 +108,13 @@ export const FieldFragment = gql`
 			max
 		}
 
+		... on Field_FileUpload {
+			limitFiles
+			sizeLimit
+			allowedKinds
+			sizeMinLimit
+		}
+
 		... on Field_Name {
 			useMultipleFields
 			fields {

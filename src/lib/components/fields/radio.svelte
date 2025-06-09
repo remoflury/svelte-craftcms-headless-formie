@@ -13,7 +13,7 @@
 	let { item, updateFormFields, formStore }: Props = $props();
 
 	const field = $derived(item?.displayName == 'Radio' ? item : null);
-	const error = $derived(formStore.errorByHandle(field?.handle));
+	const error = $derived(formStore.getErrorByHandle(field?.handle));
 
 	let group: string = $state('');
 

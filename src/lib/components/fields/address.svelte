@@ -12,13 +12,13 @@
 	let { item, formStore }: Props = $props();
 
 	const field = $derived(item?.displayName == 'Address' ? item : null);
-	const errorAddress1 = $derived(formStore.errorByHandle(`${field?.handle}.address1`));
-	const errorAddress2 = $derived(formStore.errorByHandle(`${field?.handle}.address2`));
-	const errorAddress3 = $derived(formStore.errorByHandle(`${field?.handle}.address3`));
-	const errorCity = $derived(formStore.errorByHandle(`${field?.handle}.city`));
-	const errorState = $derived(formStore.errorByHandle(`${field?.handle}.state`));
-	const errorZip = $derived(formStore.errorByHandle(`${field?.handle}.zip`));
-	const errorCountry = $derived(formStore.errorByHandle(`${field?.handle}.country`));
+	const errorAddress1 = $derived(formStore.getErrorByHandle(`${field?.handle}.address1`));
+	const errorAddress2 = $derived(formStore.getErrorByHandle(`${field?.handle}.address2`));
+	const errorAddress3 = $derived(formStore.getErrorByHandle(`${field?.handle}.address3`));
+	const errorCity = $derived(formStore.getErrorByHandle(`${field?.handle}.city`));
+	const errorState = $derived(formStore.getErrorByHandle(`${field?.handle}.state`));
+	const errorZip = $derived(formStore.getErrorByHandle(`${field?.handle}.zip`));
+	const errorCountry = $derived(formStore.getErrorByHandle(`${field?.handle}.country`));
 </script>
 
 {#if field}

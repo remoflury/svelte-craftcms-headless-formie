@@ -1,6 +1,11 @@
 <script lang="ts">
 	import type { AfterSubmitState, FormieFormProps } from '$lib/types/ComponentTypes.js';
-	import { addRecaptcha, areInputFieldsValid, checkFieldConditions } from '$lib/utils/formUtils.js';
+	import {
+		addRecaptcha,
+		areInputFieldsValid,
+		checkFieldConditions,
+		isValidJSON
+	} from '$lib/utils/formUtils.js';
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
 	import { onMount } from 'svelte';
 	import { getFormMutation, getMutationVariables } from '$lib/utils/mutationUtils.js';
@@ -18,16 +23,17 @@
 
 	let {
 		handle,
-		errorSnippet,
-		skeletonSnippet,
-		onaftersubmit,
 		isLoading = $bindable(false),
-		afterSubmitSnippet,
-		recaptchaHint = recaptchaHintSnippet,
-		submitButton,
 		recaptchaKey,
 		publicCmsApi,
 		siteId: submitToSiteId = undefined,
+		class: formClass = '',
+		errorSnippet,
+		skeletonSnippet,
+		onaftersubmit,
+		afterSubmitSnippet,
+		recaptchaHint = recaptchaHintSnippet,
+		submitButton,
 		pagination,
 		...rest
 	}: FormieFormProps = $props();
@@ -136,13 +142,14 @@
 					isSuccess: true
 				};
 			} else {
-				const errorMessages: Record<string, string[]> = JSON.parse(
-					errors[0].message.replaceAll("'", '')
-				);
-				formStore.errors = errorMessages;
-				console.error('Error', errorMessages);
-
-				console.log(errors);
+				const getErrorMessages = (): Record<string, string[]> => {
+					if (isValidJSON(errors[0].message)) {
+						return JSON.parse(errors[0].message.replaceAll("'", '')) as Record<string, string[]>;
+					}
+					return { message: [errors[0].message] };
+				};
+				formStore.errors = getErrorMessages();
+				console.error('Error', getErrorMessages());
 
 				afterSubmitState = {
 					message: formData?.form?.settings?.errorMessageHtml,
@@ -199,6 +206,7 @@ Usage:
 {:then}
 	{#if formData && formData.data}
 		<form
+			class={formClass}
 			bind:this={form}
 			id={formId}
 			onsubmit={async (e) => await onSubmit(e, formData.data!, submitToSiteId)}

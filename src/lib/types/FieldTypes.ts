@@ -16,7 +16,8 @@ export type FieldProps =
 	| RadioFieldProps
 	| SingleLineFieldProps
 	| DateFieldProps
-	| HiddenFieldProps;
+	| HiddenFieldProps
+	| FileUploadProps;
 
 type Attributes = {
 	label: string;
@@ -189,8 +190,8 @@ export type RadioFieldProps = BaseFormFieldProps<'Radio'> & {
 };
 
 export type FileUploadProps = BaseFormFieldProps<'FileUpload'> & {
-	sizeLimit: string | null;
-	sizeMinLimit: string | null;
-	limitFiles: string | null;
+	sizeLimit: string | null; // maximum file size
+	sizeMinLimit: string | null; // min file size
+	limitFiles: string | null; // count of maximum allowed files
 	allowedKinds: string[];
 };

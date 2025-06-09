@@ -98,12 +98,11 @@ export const getMutationVariables = async (
 		return groupedFields;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const getBase64 = (file: any) => {
+	const getBase64 = (file: File): Promise<string> => {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
 			reader.readAsDataURL(file);
-			reader.onload = () => resolve(reader.result);
+			reader.onload = () => resolve(reader.result as string);
 			reader.onerror = (error) => reject(error);
 		});
 	};
@@ -119,21 +118,24 @@ export const getMutationVariables = async (
 
 		// Fix FileUploadInput
 		if (inputTypeName === '[FileUploadInput]') {
-			const fileInputValue = formData.get(info.handle);
-			// @ts-expect-error works fine
-			if (fileInputValue?.size) {
-				try {
-					// const base64Value = base64(fileInputValue)
-					const base64Value = await getBase64(fileInputValue); // Wait for the base64 conversion
-					// @ts-expect-error works fine
-					object[info.handle] = [{ fileData: base64Value, filename: fileInputValue.name }]; // Assign the base64 string to the object
-				} catch (error) {
-					console.error('Error converting file to base64:', error);
-				}
-			} else {
-				// Provide a default value for file inputs when no file is uploaded
-				object[info.handle] = []; // or set to null or any other placeholder that your backend expects
+			const fileInputValues = formData.getAll(info.handle) as File[];
+			const transformedValues: { fileData: string; filename: string }[] = [];
+			if (fileInputValues.length && fileInputValues[0].size) {
+				// per default, an empty input field has always a length. but its first elem will be empty
+				await Promise.all(
+					fileInputValues.map(async (file) => {
+						if (!file.size) return;
+						try {
+							const base64Value = await getBase64(file); // Wait for the base64 conversion
+							if (!base64Value) return;
+							transformedValues.push({ fileData: base64Value, filename: file.name }); // Assign the base64 string to the object
+						} catch (error) {
+							console.error('Error converting file to base64:', error);
+						}
+					})
+				);
 			}
+			object[info.handle] = transformedValues;
 		}
 
 		// Neue Logik in getMutationVariables
@@ -220,46 +222,101 @@ export const getMutationVariables = async (
 	return object;
 };
 
+export const allowedFileTypes: Record<string, { result: string; key: string }> = {
+	all: {
+		result: '*',
+		key: ''
+	},
+	word: {
+		result: '.doc, .docx',
+		key: 'word'
+	},
+	image: {
+		result: 'image/*',
+		key: 'image'
+	},
+	pdf: {
+		result: '.pdf',
+		key: 'pdf'
+	},
+	audio: {
+		result: 'audio/*',
+		key: 'audio'
+	},
+	captionsSubtitles: {
+		result: '.vtt, .srt',
+		key: 'captionsSubtitles'
+	},
+	json: {
+		result: 'application/json',
+		key: 'json'
+	},
+	excel: {
+		result: '.xls, .xlsx',
+		key: 'excel'
+	},
+	compressed: {
+		result: '.zip, .rar, .7zip',
+		key: 'compressed'
+	},
+	javascript: {
+		result: '.js',
+		key: 'javascript'
+	},
+	text: {
+		result: '.txt, .rtf',
+		key: 'text'
+	},
+	powerpoint: {
+		result: '.ppt, .pptx, .pps, .ppsx',
+		key: 'powerpoint'
+	},
+	video: {
+		result: 'video/*',
+		key: 'video'
+	}
+};
+
 export const getAllowedFileTypes = (input: string[]): string => {
 	if (input.length === 0) return '*';
 	const fileTypes = input.map((type) => {
 		let result: string = '';
 		switch (type) {
-			case 'word':
-				result = '.doc, .docx';
+			case allowedFileTypes.word.key:
+				result = allowedFileTypes.word.result;
 				break;
-			case 'image':
-				result = 'image/*';
+			case allowedFileTypes.image.key:
+				result = allowedFileTypes.image.result;
 				break;
-			case 'pdf':
-				result = '.pdf';
+			case allowedFileTypes.pdf.key:
+				result = allowedFileTypes.pdf.result;
 				break;
-			case 'audio':
-				result = 'audio/*';
+			case allowedFileTypes.audio.key:
+				result = allowedFileTypes.audio.result;
 				break;
-			case 'captionsSubtitles':
-				result = '.vtt, .srt';
+			case allowedFileTypes.captionsSubtitles.key:
+				result = allowedFileTypes.captionsSubtitles.result;
 				break;
-			case 'json':
-				result = 'application/json';
+			case allowedFileTypes.json.key:
+				result = allowedFileTypes.json.result;
 				break;
-			case 'excel':
-				result = '.xls, .xlsx';
+			case allowedFileTypes.excel.key:
+				result = allowedFileTypes.excel.result;
 				break;
-			case 'compressed':
-				result = '.zip, .rar, .7zip';
+			case allowedFileTypes.compressed.key:
+				result = allowedFileTypes.compressed.result;
 				break;
-			case 'javascript':
-				result = '.js';
+			case allowedFileTypes.javascript.key:
+				result = allowedFileTypes.javascript.result;
 				break;
-			case 'text':
-				result = '.txt, .rtf';
+			case allowedFileTypes.text.key:
+				result = allowedFileTypes.text.result;
 				break;
-			case 'powerpoint':
-				result = '.ppt, .pptx, .pps, .ppsx';
+			case allowedFileTypes.powerpoint.key:
+				result = allowedFileTypes.powerpoint.result;
 				break;
-			case 'video':
-				result = 'video/*';
+			case allowedFileTypes.video.key:
+				result = allowedFileTypes.video.result;
 				break;
 		}
 

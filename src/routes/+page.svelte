@@ -8,7 +8,7 @@
 
 <section>
 	<FormieForm
-		handle="testformular"
+		handle="fileupload"
 		publicCmsApi="https://craft-test.ddev.site/api"
 		onaftersubmit={(e) => console.log(e)}
 		bind:isLoading
@@ -34,7 +34,8 @@
 
 		{#snippet afterSubmitSnippet({ state })}
 			<p style="color: {state.isSuccess ? 'green' : 'red'}">
-				{state.message}
+				<!-- eslint-disable-next-line -->
+				{@html state.message}
 			</p>
 		{/snippet}
 

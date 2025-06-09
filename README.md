@@ -8,6 +8,9 @@ It allows you to simply install the dependencies, style your components without 
 - Craft CMS > 5.0
 - Formie > 3.0
 - Craft CMS's GraphQl Schema enabled
+- Enable all fields in the Formie Settings, which this plugin supports
+
+If you are using the File Input, please be sure to enable mutation (creation) of assets in your graphql schema.
 
 ## Installation & Setup
 
@@ -52,6 +55,7 @@ You can pass in multiple snippets:
 | `siteId`             | siteId, which the submission should be submitted to.                                                                                                                          | `string \| number \| undefined`                                      | `undefined`                 |
 | `recaptchaKey`       | if recaptcha is setup in formie, pass in the recaptcha key                                                                                                                    | `string \| undefined`                                                | undefined                   |
 | `isLoading`          | allows you to bind to a loading state during the submission                                                                                                                   | `boolean \| undefined`                                               | false                       |
+| `class`              | optional classes will can be directly used to style the `<form>` element                                                                                                      | `string \| undefined`                                                | `''`                        |
 | `skeletonSnippet`    | renders a skeleton loader snippet                                                                                                                                             | `Snippet \| undefined`                                               | undefined                   |
 | `afterSubmitSnippet` | renders a snippet after the submission. The message displayed will contain the elements from craft formie.                                                                    | `Snippet \| undefined `                                              | undefined                   |
 | `errorSnippet`       | renders an error snippet if an error is caught during inititial render. In contrary to `afterSubmitSnippet`, this Snippet will allow you to render totally custom components. | `Snippet \| undefined`                                               | undefined                   |
@@ -115,6 +119,7 @@ The `data-formie-field-*` attribute stands for the top html element of a given i
 - `data-formie-field-phone`
 - `data-formie-field-radio`
 - `data-formie-field-single-line-text`
+- `data-formie-field-fileupload`
 - `data-formie-recaptcha-hint`
 - `data-formie-field-error`
 
@@ -142,25 +147,16 @@ This can be used to style invalid form-fields:
 
 ```svelte
 <script lang="ts">
-	import { PUBLIC_CMS_API } from '$env/static/public';
 	import { FormieForm } from '$lib/index.js';
 
-	let { data } = $props();
-	const form = $derived(data.data.form);
 	let isLoading = $state(false);
-	let submitButtonText = $state('');
-	let afterSubmitState: AfterSubmitState | undefined = $state();
 </script>
 
 <FormieForm
-	handle={form[0].handle}
-	publicCmsApi={PUBLIC_CMS_API}
-	recaptchaKey={PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY}
-	onsuccessfulsubmit={(message) => console.log(message)}
-	onerror={(message) => console.log(message)}
+	handle="your-form-handle"
+	publicCmsApi="https://your-graphql-endpoint.dev"
+	onaftersubmit={(e) => console.log(e)}
 	bind:isLoading
-	bind:submitButtonText
-	bind:afterSubmitState
 >
 	{#snippet skeletonSnippet()}
 		this is a skeleton fallback
@@ -199,3 +195,6 @@ Currently, only the following formie Fields are supported:
 - Phone Number
 - Radio Buttons
 - Single-line Text
+- File Upload
+
+Be sure to enable / disable those fields accordingly in your formie settings.
