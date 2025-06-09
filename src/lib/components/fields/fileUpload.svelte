@@ -16,12 +16,9 @@
 	const error = $derived(formStore.errorByHandle(field?.handle));
 	const multipleAllowed: true | undefined = $derived.by(() => {
 		if (!field) return undefined;
-		console.log(field.limitFiles);
 		if (field.limitFiles !== null && parseInt(field.limitFiles) == 0) return undefined;
 		return true;
 	});
-
-	// $inspect(item);
 
 	/**
 	 * ========================

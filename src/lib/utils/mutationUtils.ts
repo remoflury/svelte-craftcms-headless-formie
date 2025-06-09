@@ -98,11 +98,11 @@ export const getMutationVariables = async (
 		return groupedFields;
 	}
 
-	const getBase64 = (file: File) => {
+	const getBase64 = (file: File): Promise<string> => {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
 			reader.readAsDataURL(file);
-			reader.onload = () => resolve(reader.result);
+			reader.onload = () => resolve(reader.result as string);
 			reader.onerror = (error) => reject(error);
 		});
 	};
@@ -118,19 +118,24 @@ export const getMutationVariables = async (
 
 		// Fix FileUploadInput
 		if (inputTypeName === '[FileUploadInput]') {
-			const fileInputValue = formData.get(info.handle) as File | null;
-			if (fileInputValue?.size) {
-				try {
-					// const base64Value = base64(fileInputValue)
-					const base64Value = await getBase64(fileInputValue); // Wait for the base64 conversion
-					object[info.handle] = [{ fileData: base64Value, filename: fileInputValue.name }]; // Assign the base64 string to the object
-				} catch (error) {
-					console.error('Error converting file to base64:', error);
-				}
-			} else {
-				// Provide a default value for file inputs when no file is uploaded
-				object[info.handle] = []; // or set to null or any other placeholder that your backend expects
+			const fileInputValues = formData.getAll(info.handle) as File[];
+			const transformedValues: { fileData: string; filename: string }[] = [];
+			if (fileInputValues.length && fileInputValues[0].size) {
+				// per default, an empty input field has always a length. but its first elem will be empty
+				await Promise.all(
+					fileInputValues.map(async (file) => {
+						if (!file.size) return;
+						try {
+							const base64Value = await getBase64(file); // Wait for the base64 conversion
+							if (!base64Value) return;
+							transformedValues.push({ fileData: base64Value, filename: file.name }); // Assign the base64 string to the object
+						} catch (error) {
+							console.error('Error converting file to base64:', error);
+						}
+					})
+				);
 			}
+			object[info.handle] = transformedValues;
 		}
 
 		// Neue Logik in getMutationVariables

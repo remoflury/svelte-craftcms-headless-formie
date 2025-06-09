@@ -195,5 +195,6 @@ Currently, only the following formie Fields are supported:
 - Phone Number
 - Radio Buttons
 - Single-line Text
+- File Upload
 
 Be sure to enable / disable those fields accordingly in your formie settings.
