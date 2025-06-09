@@ -14,8 +14,14 @@
 
 	const field = $derived(item?.displayName == 'FileUpload' ? item : null);
 	const error = $derived(formStore.errorByHandle(field?.handle));
+	const multipleAllowed: true | undefined = $derived.by(() => {
+		if (!field) return undefined;
+		console.log(field.limitFiles);
+		if (field.limitFiles !== null && parseInt(field.limitFiles) == 0) return undefined;
+		return true;
+	});
 
-	$inspect(item);
+	// $inspect(item);
 
 	/**
 	 * ========================
@@ -54,8 +60,8 @@
 			required={field.required}
 			aria-invalid={!!error}
 			aria-errormessage={error}
-			value={field.defaultValue}
 			accept={getAllowedFileTypes(field.allowedKinds || [])}
+			multiple={multipleAllowed}
 		/>
 		<FieldError {error} />
 	</div>

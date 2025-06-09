@@ -150,3 +150,22 @@ export const checkValidity = (
 
 	return isValid;
 };
+
+/**
+ * @function isValidJSON
+ * @description
+ * checks if a string is valid json format
+ *
+ * @param input
+ * @returns boolean
+ */
+export const isValidJSON = (input: string | undefined | null): boolean => {
+	if (!input) return false;
+	try {
+		JSON.parse(input);
+		return true;
+		// eslint-disable-next-line
+	} catch (e) {
+		return false;
+	}
+};

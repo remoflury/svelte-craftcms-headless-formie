@@ -98,8 +98,7 @@ export const getMutationVariables = async (
 		return groupedFields;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const getBase64 = (file: any) => {
+	const getBase64 = (file: File) => {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
 			reader.readAsDataURL(file);
@@ -109,6 +108,7 @@ export const getMutationVariables = async (
 	};
 
 	for (const info of mutationTypes) {
+		// console.log('info', info)
 		const { handle, inputTypeName } = info;
 		let value = object[handle];
 
@@ -119,14 +119,15 @@ export const getMutationVariables = async (
 
 		// Fix FileUploadInput
 		if (inputTypeName === '[FileUploadInput]') {
-			const fileInputValue = formData.get(info.handle);
-			// @ts-expect-error works fine
+			const fileInputValue = formData.get(info.handle) as File | null;
 			if (fileInputValue?.size) {
 				try {
 					// const base64Value = base64(fileInputValue)
 					const base64Value = await getBase64(fileInputValue); // Wait for the base64 conversion
-					// @ts-expect-error works fine
 					object[info.handle] = [{ fileData: base64Value, filename: fileInputValue.name }]; // Assign the base64 string to the object
+
+					console.log('object', object);
+					console.log('info.handle', info.handle);
 				} catch (error) {
 					console.error('Error converting file to base64:', error);
 				}
@@ -217,6 +218,7 @@ export const getMutationVariables = async (
 		};
 	});
 
+	console.log('ooobj', object);
 	return object;
 };
 

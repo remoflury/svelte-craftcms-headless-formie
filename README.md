@@ -8,6 +8,9 @@ It allows you to simply install the dependencies, style your components without 
 - Craft CMS > 5.0
 - Formie > 3.0
 - Craft CMS's GraphQl Schema enabled
+- Enable all fields in the Formie Settings, which this plugin supports
+
+If you are using the File Input, please be sure to enable mutation (creation) of assets in your graphql schema.
 
 ## Installation & Setup
 
@@ -52,6 +55,7 @@ You can pass in multiple snippets:
 | `siteId`             | siteId, which the submission should be submitted to.                                                                                                                          | `string \| number \| undefined`                                      | `undefined`                 |
 | `recaptchaKey`       | if recaptcha is setup in formie, pass in the recaptcha key                                                                                                                    | `string \| undefined`                                                | undefined                   |
 | `isLoading`          | allows you to bind to a loading state during the submission                                                                                                                   | `boolean \| undefined`                                               | false                       |
+| `class`              | optional classes will can be directly used to style the `<form>` element                                                                                                      | `string \| undefined`                                                | `''`                        |
 | `skeletonSnippet`    | renders a skeleton loader snippet                                                                                                                                             | `Snippet \| undefined`                                               | undefined                   |
 | `afterSubmitSnippet` | renders a snippet after the submission. The message displayed will contain the elements from craft formie.                                                                    | `Snippet \| undefined `                                              | undefined                   |
 | `errorSnippet`       | renders an error snippet if an error is caught during inititial render. In contrary to `afterSubmitSnippet`, this Snippet will allow you to render totally custom components. | `Snippet \| undefined`                                               | undefined                   |

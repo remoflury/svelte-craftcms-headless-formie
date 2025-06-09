@@ -9,6 +9,7 @@ export type FormieFormProps = HTMLFormAttributes & {
 	isLoading?: boolean;
 	recaptchaKey?: string;
 	siteId?: string | number;
+	class?: string;
 	// events
 	onaftersubmit?: (d: AfterSubmitState) => void;
 	// Snippets
