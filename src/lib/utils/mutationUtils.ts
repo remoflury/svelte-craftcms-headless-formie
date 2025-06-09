@@ -220,46 +220,101 @@ export const getMutationVariables = async (
 	return object;
 };
 
+export const allowedFileTypes: Record<string, { result: string; key: string }> = {
+	all: {
+		result: '*',
+		key: ''
+	},
+	word: {
+		result: '.doc, .docx',
+		key: 'word'
+	},
+	image: {
+		result: 'image/*',
+		key: 'image'
+	},
+	pdf: {
+		result: '.pdf',
+		key: 'pdf'
+	},
+	audio: {
+		result: 'audio/*',
+		key: 'audio'
+	},
+	captionsSubtitles: {
+		result: '.vtt, .srt',
+		key: 'captionsSubtitles'
+	},
+	json: {
+		result: 'application/json',
+		key: 'json'
+	},
+	excel: {
+		result: '.xls, .xlsx',
+		key: 'excel'
+	},
+	compressed: {
+		result: '.zip, .rar, .7zip',
+		key: 'compressed'
+	},
+	javascript: {
+		result: '.js',
+		key: 'javascript'
+	},
+	text: {
+		result: '.txt, .rtf',
+		key: 'text'
+	},
+	powerpoint: {
+		result: '.ppt, .pptx, .pps, .ppsx',
+		key: 'powerpoint'
+	},
+	video: {
+		result: 'video/*',
+		key: 'video'
+	}
+};
+
 export const getAllowedFileTypes = (input: string[]): string => {
 	if (input.length === 0) return '*';
 	const fileTypes = input.map((type) => {
 		let result: string = '';
 		switch (type) {
-			case 'word':
-				result = '.doc, .docx';
+			case allowedFileTypes.word.key:
+				result = allowedFileTypes.word.result;
 				break;
-			case 'image':
-				result = 'image/*';
+			case allowedFileTypes.image.key:
+				result = allowedFileTypes.image.result;
 				break;
-			case 'pdf':
-				result = '.pdf';
+			case allowedFileTypes.pdf.key:
+				result = allowedFileTypes.pdf.result;
 				break;
-			case 'audio':
-				result = 'audio/*';
+			case allowedFileTypes.audio.key:
+				result = allowedFileTypes.audio.result;
 				break;
-			case 'captionsSubtitles':
-				result = '.vtt, .srt';
+			case allowedFileTypes.captionsSubtitles.key:
+				result = allowedFileTypes.captionsSubtitles.result;
 				break;
-			case 'json':
-				result = 'application/json';
+			case allowedFileTypes.json.key:
+				result = allowedFileTypes.json.result;
 				break;
-			case 'excel':
-				result = '.xls, .xlsx';
+			case allowedFileTypes.excel.key:
+				result = allowedFileTypes.excel.result;
 				break;
-			case 'compressed':
-				result = '.zip, .rar, .7zip';
+			case allowedFileTypes.compressed.key:
+				result = allowedFileTypes.compressed.result;
 				break;
-			case 'javascript':
-				result = '.js';
+			case allowedFileTypes.javascript.key:
+				result = allowedFileTypes.javascript.result;
 				break;
-			case 'text':
-				result = '.txt, .rtf';
+			case allowedFileTypes.text.key:
+				result = allowedFileTypes.text.result;
 				break;
-			case 'powerpoint':
-				result = '.ppt, .pptx, .pps, .ppsx';
+			case allowedFileTypes.powerpoint.key:
+				result = allowedFileTypes.powerpoint.result;
 				break;
-			case 'video':
-				result = 'video/*';
+			case allowedFileTypes.video.key:
+				result = allowedFileTypes.video.result;
 				break;
 		}
 
