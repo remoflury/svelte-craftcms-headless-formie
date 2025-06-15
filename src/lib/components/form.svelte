@@ -9,6 +9,7 @@
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
 	import { onMount } from 'svelte';
 	import { getFormMutation, getMutationVariables } from '$lib/utils/mutationUtils.js';
+	import { FormQuery } from '$lib/queries/FormQuery.js';
 	import { recaptchaHintSnippet } from './recaptchaHintSnippet.svelte';
 	import Field from './field.svelte';
 	import type {
@@ -19,7 +20,6 @@
 		FormiePagesProps
 	} from '$lib/types/FormTypes.js';
 	import { FormStore } from '$lib/store.svelte.js';
-	import { getFormQuery } from '$lib/queries/FormQuery.js';
 
 	let {
 		handle,
@@ -53,9 +53,7 @@
 	let afterSubmitState: AfterSubmitState | undefined = $state(undefined);
 	let submitButtonText: string | undefined = $state(undefined);
 
-	const query: string = getFormQuery(['FileUpload'])?.loc?.source?.body ?? '';
-	console.log(query);
-	// const query: string = FormQuery?.loc?.source?.body ?? '';
+	const query: string = FormQuery?.loc?.source?.body ?? '';
 
 	let options = $derived({
 		method: 'POST',

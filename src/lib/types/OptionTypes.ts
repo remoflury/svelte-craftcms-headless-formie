@@ -9,7 +9,7 @@ import type {
 } from 'svelte/transition';
 
 export type Options = {
-	supportedFields?: FieldDisplayNameOption[];
+	supportedFields?: FieldDisplayNameOption;
 	recaptchaKey?: string;
 	afterSubmit?: AfterSubmitOption;
 	fields?: {
