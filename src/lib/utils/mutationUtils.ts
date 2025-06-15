@@ -84,6 +84,7 @@ export const getMutationVariables = async (
 	const formData = new FormData(el);
 	const object = FormDataJson.toJson(el);
 	const mutationTypes = getFormFieldMeta(form);
+	console.log({ mutationTypes });
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	function groupFields(object: any, fieldName: string) {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
