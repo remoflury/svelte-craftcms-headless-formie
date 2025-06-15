@@ -1,5 +1,5 @@
 import type { Component } from 'svelte';
-import type { FieldProps } from './FieldTypes.js';
+// import type { FieldProps } from './FieldTypes.js';
 import type {
 	BlurParams,
 	FadeParams,
@@ -9,7 +9,7 @@ import type {
 } from 'svelte/transition';
 
 export type Options = {
-	supportedFields?: FieldDisplayNameOption[];
+	// supportedFields?: FieldDisplayNameOption[];
 	recaptchaKey?: string;
 	afterSubmit?: AfterSubmitOption;
 	fields?: {
@@ -20,7 +20,7 @@ export type Options = {
 	// TODOI: Placement
 };
 
-type FieldDisplayNameOption = FieldProps['displayName'];
+// type FieldDisplayNameOption = FieldProps['displayName'];
 
 type TransitionTypes = 'fade' | 'fly' | 'blur' | 'scale' | 'slide';
 type TransitionOption = {

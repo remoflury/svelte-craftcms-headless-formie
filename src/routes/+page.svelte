@@ -6,7 +6,7 @@
 	let isLoading = $state(false);
 
 	const options: FormieOptions = {
-		supportedFields: ['SingleLineText']
+		// supportedFields: ['SingleLineText']
 	};
 </script>
 

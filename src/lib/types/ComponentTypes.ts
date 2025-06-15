@@ -30,7 +30,7 @@ export type FormieFormProps = HTMLFormAttributes & {
 		]
 	>;
 
-	options?: FormieOptions
+	options?: FormieOptions;
 };
 
 type MultistepBtnProps = HTMLButtonAttributes & {
