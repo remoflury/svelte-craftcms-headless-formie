@@ -1,13 +1,18 @@
 <script lang="ts">
-	import { FormieForm } from '$lib/index.js';
+	import { FormieForm, type FormieOptions } from '$lib/index.js';
 
 	// let { data } = $props();
 
 	let isLoading = $state(false);
+
+	const options: FormieOptions = {
+		supportedFields: ['SingleLineText']
+	};
 </script>
 
 <section>
 	<FormieForm
+		{options}
 		handle="fileupload"
 		publicCmsApi="https://craft-test.ddev.site/api"
 		onaftersubmit={(e) => console.log(e)}

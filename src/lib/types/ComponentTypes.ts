@@ -1,3 +1,4 @@
+import type { FormieOptions } from '$lib/index.js';
 import type { Snippet } from 'svelte';
 import type { HTMLButtonAttributes, HTMLFormAttributes } from 'svelte/elements';
 
@@ -28,6 +29,8 @@ export type FormieFormProps = HTMLFormAttributes & {
 			}
 		]
 	>;
+
+	options?: FormieOptions
 };
 
 type MultistepBtnProps = HTMLButtonAttributes & {

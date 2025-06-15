@@ -7,7 +7,7 @@
 		isValidJSON
 	} from '$lib/utils/formUtils.js';
 	import { load, type ReCaptchaInstance } from 'recaptcha-v3';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { getFormMutation, getMutationVariables } from '$lib/utils/mutationUtils.js';
 	import { FormQuery } from '$lib/queries/FormQuery.js';
 	import { recaptchaHintSnippet } from './recaptchaHintSnippet.svelte';
@@ -20,6 +20,7 @@
 		FormiePagesProps
 	} from '$lib/types/FormTypes.js';
 	import { FormStore } from '$lib/store.svelte.js';
+	import { FORMIE_CONTEXT_KEY } from '$lib/utils/constants.js';
 
 	let {
 		handle,
@@ -35,6 +36,7 @@
 		recaptchaHint = recaptchaHintSnippet,
 		submitButton,
 		pagination,
+		options: formieOptions,
 		...rest
 	}: FormieFormProps = $props();
 
@@ -54,6 +56,7 @@
 	let submitButtonText: string | undefined = $state(undefined);
 
 	const query: string = FormQuery?.loc?.source?.body ?? '';
+	setContext(FORMIE_CONTEXT_KEY, formieOptions);
 
 	let options = $derived({
 		method: 'POST',
