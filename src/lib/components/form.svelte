@@ -25,7 +25,6 @@
 	let {
 		handle,
 		isLoading = $bindable(false),
-		recaptchaKey,
 		publicCmsApi,
 		siteId: submitToSiteId = undefined,
 		class: formClass = '',
@@ -114,14 +113,14 @@
 			siteId: number | string | undefined
 		) => {
 			// return early if recaptcha instance is not present and there is a recaptcha key
-			if (!recaptcha && recaptchaKey) return;
+			if (!recaptcha && formieOptions && formieOptions.recaptchaKey) return;
 			afterSubmitState = undefined;
 			e.preventDefault();
 			isLoading = true;
 
 			if (!areInputFieldsValid(pages, pageIndex)) return;
 			formStore.clearErrors(); //clear the errorStates
-			addRecaptcha(recaptcha, formData, recaptchaKey);
+			addRecaptcha(recaptcha, formData, formieOptions?.recaptchaKey);
 
 			const formMutation = getFormMutation(formData.form, siteId);
 			const formDataVariables = await getMutationVariables(formData.form, form);
@@ -179,8 +178,8 @@
 	};
 
 	onMount(async () => {
-		if (!recaptchaKey) return;
-		recaptcha = await load(recaptchaKey, { autoHideBadge: true });
+		if (!formieOptions?.recaptchaKey) return;
+		recaptcha = await load(formieOptions.recaptchaKey, { autoHideBadge: true });
 	});
 
 	// update all values if either page index changes or formData changes
@@ -256,7 +255,7 @@ Usage:
 				{@render afterSubmitSnippet({ state: afterSubmitState })}
 			{/if}
 		</form>
-		{#if recaptchaKey}
+		{#if formieOptions?.recaptchaKey}
 			{@render recaptchaHint?.()}
 		{/if}
 	{/if}

@@ -8,7 +8,6 @@ export type FormieFormProps = HTMLFormAttributes & {
 	publicCmsApi: string;
 	handle: string;
 	isLoading?: boolean;
-	recaptchaKey?: string;
 	siteId?: string | number;
 	class?: string;
 	// events
