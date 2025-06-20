@@ -1,9 +1,12 @@
 <script lang="ts">
 	import type { FormStore } from '$lib/store.svelte.js';
 	import type { FieldProps } from '$lib/types/FieldTypes.js';
+	import type { FormieOptions } from '$lib/index.js';
 	import { getAllowedFileTypes } from '$lib/utils/mutationUtils.js';
+	import { getContext } from 'svelte';
 	import FieldError from '../fieldError.svelte';
 	import Label from '../label.svelte';
+	import { FORMIE_CONTEXT_KEY } from '$lib/utils/constants.js';
 
 	type Props = {
 		item: FieldProps;
@@ -21,7 +24,11 @@
 		if (field.limitFiles !== null && parseInt(field.limitFiles) == 0) return undefined;
 		return true;
 	});
+	let options: FormieOptions = getContext(FORMIE_CONTEXT_KEY);
+	const nativeOptions = $derived(options?.fields?.fileUpload?.showNative);
 
+	$inspect(nativeOptions);
+	$inspect({ files });
 	/**
 	 * ========================
 	 * 				functions
@@ -95,9 +102,31 @@
 		if (inputEl) inputEl.value = '';
 		files = undefined;
 	};
+
+	/**
+	 * @function removeFile
+	 *
+	 * @description
+	 * Removes a file from the list by index
+	 *
+	 * @param {number} index - The index of the file to remove
+	 *
+	 * @returns {void}
+	 */
+	const removeFile = (index: number): void => {
+		if (!files) return;
+		// Create a new DataTransfer and re-add every file except the one at `index`
+		const dt = new DataTransfer();
+		Array.from(files).forEach((file, i) => {
+			if (i !== index) dt.items.add(file);
+		});
+
+		// Write the new FileList back into files
+		files = dt.files;
+	};
 </script>
 
-{#if field}
+{#if field && nativeOptions === true}
 	<div data-formie-field-fileupload class={field.cssClasses ?? ''}>
 		<Label for={field.handle} required={field.required}>{field.label}</Label>
 		<input
@@ -115,5 +144,47 @@
 			onchange={handleChange}
 		/>
 		<FieldError {error} />
+	</div>
+{:else if field && typeof nativeOptions === 'object'}
+	<div data-formie-field-fileupload class={field.cssClasses ?? ''}>
+		<div aria-invalid={!!error} aria-errormessage={error}>
+			<Label for={field.handle} required={field.required}>
+				{files?.length
+					? nativeOptions.textAfterSelection.replace('%%', files?.length.toString() ?? '')
+					: nativeOptions.textBeforeSelection}
+			</Label>
+		</div>
+
+		<input
+			type="file"
+			id={field.handle}
+			name={field.handle}
+			placeholder={field.placeholder}
+			required={field.required}
+			accept={getAllowedFileTypes(field.allowedKinds || [])}
+			multiple={multipleAllowed}
+			bind:files
+			bind:this={inputEl}
+			hidden
+			onchange={handleChange}
+		/>
+
+		{#if nativeOptions.fileList && nativeOptions.fileList.cancel && files}
+			{@const Cancel = nativeOptions.fileList.cancel}
+			<ul>
+				{#each files as file, i (i)}
+					<li>
+						{file.name}
+						<button aria-label="remove {file.name}" type="button" onclick={() => removeFile(i)}>
+							{#if typeof Cancel === 'string'}
+								{Cancel}
+							{:else}
+								<Cancel />
+							{/if}
+						</button>
+					</li>
+				{/each}
+			</ul>
+		{/if}
 	</div>
 {/if}

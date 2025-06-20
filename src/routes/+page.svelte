@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { FormieForm, type FormieOptions } from '$lib/index.js';
+	import CrossIcon from './crossIcon.svelte';
 
 	// let { data } = $props();
 
@@ -8,6 +9,17 @@
 	const options: FormieOptions = {
 		afterSubmit: {
 			hideSubmitButton: true
+		},
+		fields: {
+			fileUpload: {
+				showNative: {
+					textBeforeSelection: 'Dateien auswählen',
+					textAfterSelection: '%% Datei(en) ausgewählt',
+					fileList: {
+						cancel: CrossIcon
+					}
+				}
+			}
 		}
 	};
 </script>

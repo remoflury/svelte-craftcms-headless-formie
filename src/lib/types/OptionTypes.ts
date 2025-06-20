@@ -11,7 +11,7 @@ import type {
 export type Options = {
 	// supportedFields?: FieldDisplayNameOption[];
 	recaptchaKey?: string; // done
-	afterSubmit?: AfterSubmitOption;
+	afterSubmit?: AfterSubmitOption; // done
 	fields?: {
 		fileUpload?: FileUploadOption;
 		dropdown?: DropdownOption;
@@ -35,7 +35,18 @@ type AfterSubmitOption = {
 };
 
 type FileUploadOption = {
-	browerNative?: boolean;
+	showNative?:
+		| {
+				textBeforeSelection: string;
+				textAfterSelection: string; // define a count placeholder for the number of selected files with %%. e.g. %% files selected
+				fileList?:
+					| {
+							cancel: Component | string; // text or icon  to display if list is defined
+							// transition?: // optional flip transition animation
+					  }
+					| false;
+		  }
+		| true; // if not defined or true, the native browser element will be rendered
 	icon?: Component;
 	fileList?: boolean; // if a list of selected files should be shown
 };
