@@ -10,7 +10,7 @@ import type {
 
 export type Options = {
 	// supportedFields?: FieldDisplayNameOption[];
-	recaptchaKey?: string;
+	recaptchaKey?: string; // done
 	afterSubmit?: AfterSubmitOption;
 	fields?: {
 		fileUpload?: FileUploadOption;
@@ -29,8 +29,9 @@ type TransitionOption = {
 };
 
 type AfterSubmitOption = {
-	showForm?: boolean;
-	showSubmitButton?: boolean;
+	hideForm?: boolean;
+	hideSubmitButton?: boolean;
+	hidePagination?: boolean;
 };
 
 type FileUploadOption = {

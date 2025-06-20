@@ -6,7 +6,9 @@
 	let isLoading = $state(false);
 
 	const options: FormieOptions = {
-		// supportedFields: ['SingleLineText']
+		afterSubmit: {
+			hideSubmitButton: true
+		}
 	};
 </script>
 

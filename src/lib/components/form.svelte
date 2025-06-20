@@ -53,6 +53,15 @@
 	let formId = $derived(`${crypto.randomUUID()}-${formData?.data?.form.handle}`);
 	let afterSubmitState: AfterSubmitState | undefined = $state(undefined);
 	let submitButtonText: string | undefined = $state(undefined);
+	let hideFormAfterSubmit: boolean = $derived(
+		!!formieOptions?.afterSubmit?.hideForm && !!afterSubmitState
+	);
+	let hideSubmitBtnAfterSubmit: boolean = $derived(
+		!!formieOptions?.afterSubmit?.hideSubmitButton && !!afterSubmitState
+	);
+	let hidePaginationAfterSubmit: boolean = $derived(
+		!!formieOptions?.afterSubmit?.hidePagination && !!afterSubmitState
+	);
 
 	const query: string = FormQuery?.loc?.source?.body ?? '';
 	setContext(FORMIE_CONTEXT_KEY, formieOptions);
@@ -215,25 +224,27 @@ Usage:
 			data-formie-form
 			{...rest}
 		>
-			{#each formData.data.form.pages as page, i (page.id)}
-				<div id={page.id} class:hidden={i !== pageIndex} data-formie-page={page.id}>
-					{#if page.rows.length > 0}
-						<!-- eslint-disable-next-line -->
-						{#each page.rows as row (crypto.randomUUID())}
+			{#if !hideFormAfterSubmit}
+				{#each formData.data.form.pages as page, i (page.id)}
+					<div id={page.id} class:hidden={i !== pageIndex} data-formie-page={page.id}>
+						{#if page.rows.length > 0}
 							<!-- eslint-disable-next-line -->
-							{#each row.rowFields as field (crypto.randomUUID())}
-								{#if checkFieldConditions(field.conditions, formFields)}
-									<div data-formie-field>
-										<Field {field} {updateFormFields} {formStore} />
-									</div>
-								{/if}
+							{#each page.rows as row (crypto.randomUUID())}
+								<!-- eslint-disable-next-line -->
+								{#each row.rowFields as field (crypto.randomUUID())}
+									{#if checkFieldConditions(field.conditions, formFields)}
+										<div data-formie-field>
+											<Field {field} {updateFormFields} {formStore} />
+										</div>
+									{/if}
+								{/each}
 							{/each}
-						{/each}
-					{/if}
-				</div>
-			{/each}
+						{/if}
+					</div>
+				{/each}
+			{/if}
 
-			{#if !afterSubmitState?.isSuccess && pages.length > 1}
+			{#if !afterSubmitState?.isSuccess && pages.length > 1 && !hidePaginationAfterSubmit}
 				{@render pagination?.({
 					currentIndex: pageIndex,
 					totalPages: pages.length,
@@ -247,7 +258,7 @@ Usage:
 					}
 				})}
 			{/if}
-			{#if !afterSubmitState?.isSuccess && pageIndex + 1 === pages.length && submitButtonText}
+			{#if pageIndex + 1 === pages.length && submitButtonText && !hideSubmitBtnAfterSubmit}
 				{@render submitButton({ text: submitButtonText })}
 			{/if}
 
