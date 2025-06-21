@@ -26,9 +26,6 @@
 	});
 	let options: FormieOptions = getContext(FORMIE_CONTEXT_KEY);
 	const nativeOptions = $derived(options?.fields?.fileUpload?.showNative);
-
-	$inspect(nativeOptions);
-	$inspect({ files });
 	/**
 	 * ========================
 	 * 				functions
@@ -37,6 +34,8 @@
 
 	/**
 	 * @function convertFileSizeToMb
+	 * @description
+	 * converting the a fiven file size from bytes to MB
 	 * @param input
 	 * @returns number | undefined
 	 */
@@ -171,11 +170,17 @@
 
 		{#if nativeOptions.fileList && nativeOptions.fileList.cancel && files}
 			{@const Cancel = nativeOptions.fileList.cancel}
+			{@const btnClass = nativeOptions.fileList.buttonClass}
 			<ul>
 				{#each files as file, i (i)}
 					<li>
 						{file.name}
-						<button aria-label="remove {file.name}" type="button" onclick={() => removeFile(i)}>
+						<button
+							aria-label="remove {file.name}"
+							type="button"
+							onclick={() => removeFile(i)}
+							class={btnClass}
+						>
 							{#if typeof Cancel === 'string'}
 								{Cancel}
 							{:else}

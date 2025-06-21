@@ -42,6 +42,7 @@ type FileUploadOption = {
 				fileList?:
 					| {
 							cancel: Component | string; // text or icon  to display if list is defined
+							buttonClass?: string;
 							// transition?: // optional flip transition animation
 					  }
 					| false;

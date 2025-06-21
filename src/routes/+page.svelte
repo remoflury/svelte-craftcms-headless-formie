@@ -13,10 +13,11 @@
 		fields: {
 			fileUpload: {
 				showNative: {
-					textBeforeSelection: 'Dateien auswählen',
-					textAfterSelection: '%% Datei(en) ausgewählt',
+					textBeforeSelection: 'select files',
+					textAfterSelection: '%% file(s) selected',
 					fileList: {
-						cancel: CrossIcon
+						cancel: CrossIcon,
+						buttonClass: 'testclass'
 					}
 				}
 			}
