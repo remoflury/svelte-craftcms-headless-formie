@@ -7,9 +7,9 @@
 	let isLoading = $state(false);
 
 	const options: FormieOptions = {
-		afterSubmit: {
-			hideSubmitButton: true
-		},
+		// afterSubmit: {
+		// 	hideSubmitButton: true
+		// },
 		fields: {
 			fileUpload: {
 				showNative: {
@@ -20,6 +20,11 @@
 						buttonClass: 'testclass'
 					}
 				}
+			},
+			dropdown: {
+				showNative: {
+					textFallback: 'Alle'
+				}
 			}
 		}
 	};
@@ -28,7 +33,7 @@
 <section>
 	<FormieForm
 		{options}
-		handle="fileupload"
+		handle="select"
 		publicCmsApi="https://craft-test.ddev.site/api"
 		onaftersubmit={(e) => console.log(e)}
 		bind:isLoading

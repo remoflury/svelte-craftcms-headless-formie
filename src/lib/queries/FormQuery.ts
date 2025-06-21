@@ -91,6 +91,7 @@ export const FieldFragment = gql`
 				label
 				value
 				isDefault
+				disabled
 			}
 			multi
 		}

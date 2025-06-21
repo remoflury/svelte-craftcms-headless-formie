@@ -127,6 +127,7 @@ export type DropdownFieldProps = BaseFormFieldProps<'Dropdown'> & {
 		label: string;
 		value: string;
 		isDefault: boolean;
+		disabled: boolean;
 	}[];
 	multi: boolean;
 };

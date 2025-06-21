@@ -1,8 +1,12 @@
 <script lang="ts">
 	import type { FormStore } from '$lib/store.svelte.js';
 	import type { FieldProps } from '$lib/types/FieldTypes.js';
+	import type { FormieOptions } from '$lib/index.js';
+	import { FORMIE_CONTEXT_KEY } from '$lib/utils/constants.js';
+	import { getContext } from 'svelte';
 	import FieldError from '../fieldError.svelte';
 	import Label from '../label.svelte';
+	import NonNativeDropdwon from './nonNative/dropdown.svelte';
 
 	type Props = {
 		item: FieldProps;
@@ -13,9 +17,11 @@
 
 	const field = $derived(item?.displayName == 'Dropdown' ? item : null);
 	const error = $derived(formStore.getErrorByHandle(field?.handle));
+	let options: FormieOptions = getContext(FORMIE_CONTEXT_KEY);
+	const nativeOptions = $derived(options?.fields?.dropdown?.showNative);
 </script>
 
-{#if field}
+{#if field && (nativeOptions === true || nativeOptions === undefined)}
 	<div data-formie-field-dropdown class={field.cssClasses ?? ''}>
 		<Label required={field.required} for={field.handle}>{field.label}</Label>
 
@@ -34,4 +40,6 @@
 
 		<FieldError {error} />
 	</div>
+{:else if field && typeof nativeOptions === 'object'}
+	<NonNativeDropdwon {field} {error} {nativeOptions} />
 {/if}

@@ -125,7 +125,7 @@
 	};
 </script>
 
-{#if field && nativeOptions === true}
+{#if field && (nativeOptions === true || nativeOptions === undefined)}
 	<div data-formie-field-fileupload class={field.cssClasses ?? ''}>
 		<Label for={field.handle} required={field.required}>{field.label}</Label>
 		<input
@@ -153,6 +153,7 @@
 					: nativeOptions.textBeforeSelection}
 			</Label>
 		</div>
+		<FieldError {error} />
 
 		<input
 			type="file"

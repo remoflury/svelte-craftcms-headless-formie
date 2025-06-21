@@ -82,6 +82,7 @@ export const getMutationVariables = async (
 	el: HTMLFormElement | undefined
 ) => {
 	const formData = new FormData(el);
+	console.log(formData);
 	const object = FormDataJson.toJson(el);
 	const mutationTypes = getFormFieldMeta(form);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

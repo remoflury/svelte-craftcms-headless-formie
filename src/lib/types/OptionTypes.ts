@@ -13,7 +13,7 @@ export type Options = {
 	recaptchaKey?: string; // done
 	afterSubmit?: AfterSubmitOption; // done
 	fields?: {
-		fileUpload?: FileUploadOption;
+		fileUpload?: FileUploadOption; // done
 		dropdown?: DropdownOption;
 	};
 	transition?: TransitionOption;
@@ -52,6 +52,10 @@ type FileUploadOption = {
 	fileList?: boolean; // if a list of selected files should be shown
 };
 
-type DropdownOption = {
-	browerNative?: boolean;
+export type DropdownOption = {
+	showNative?:
+		| {
+				textFallback?: string; // text to display if not a value should be preselected
+		  }
+		| true; // if not defined or true, the native browser element will be rendered
 };
