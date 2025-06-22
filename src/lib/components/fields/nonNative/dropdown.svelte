@@ -75,7 +75,7 @@
 
 	onMount(() => {
 		// set preselected if one is available
-		selectedOption = field.options.find((o) => o.isDefault === true);
+		selectedOption = field.options.find((o) => o.isDefault === true) || field.options[0];
 	});
 
 	/**
@@ -113,34 +113,36 @@
 				bind:this={btnEl}
 			>
 				{#if !selectedOption}
-					{nativeOptions.textFallback ?? field.options[0].label}
+					{field.options[0].label}
 				{:else}
 					{selectedOption.label}
+				{/if}
+
+				{#if nativeOptions.buttonIcon}
+					{@const BtnIcon = nativeOptions.buttonIcon}
+					<span>
+						<BtnIcon />
+					</span>
 				{/if}
 			</button>
 			{#if open}
 				<ul role="listbox" id="listbox-{field.handle}">
-					{#if nativeOptions.textFallback && selectedOption}
-						<li
-							role="option"
-							aria-selected={selectedOption == undefined}
-							onclick={() => setSelectedOption(undefined)}
-							onkeydown={() => setSelectedOption(undefined)}
-						>
-							{nativeOptions.textFallback}
-						</li>
-					{/if}
-
 					{#each field.options as option (option.value)}
+						{@const isSelected = option.value === selectedOption?.value}
 						<li
 							role="option"
 							value={option.value}
-							aria-selected={option.value === selectedOption?.value}
+							aria-selected={isSelected}
 							onclick={() => setSelectedOption(option)}
 							onkeydown={() => setSelectedOption(option)}
 							aria-disabled={option.disabled}
 						>
 							{option.label}
+
+							{#if nativeOptions.selectedIcon && isSelected}
+								{@const SelectedIcon = nativeOptions.selectedIcon}
+								<SelectedIcon />
+							{/if}
 						</li>
 					{/each}
 				</ul>

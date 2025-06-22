@@ -55,7 +55,8 @@ type FileUploadOption = {
 export type DropdownOption = {
 	showNative?:
 		| {
-				textFallback?: string; // text to display if not a value should be preselected
+				buttonIcon?: Component;
+				selectedIcon?: Component;
 		  }
 		| true; // if not defined or true, the native browser element will be rendered
 };

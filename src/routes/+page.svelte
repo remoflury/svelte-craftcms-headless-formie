@@ -23,7 +23,8 @@
 			},
 			dropdown: {
 				showNative: {
-					textFallback: 'Alle'
+					buttonIcon: CrossIcon,
+					selectedIcon: CrossIcon
 				}
 			}
 		}
