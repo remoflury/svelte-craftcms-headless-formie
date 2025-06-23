@@ -75,11 +75,12 @@
 	});
 
 	/**
+	 * @description
 	 * Updates the value of a form field identified by its handle.
 	 *
 	 * This function iterates over the global `formFields` array and, for each field
 	 * whose `handle` matches the provided identifier, sets its `value` to `newValue`.
-	 * Other fields remain unchanged.
+	 * Other fields remain unchanged. It will only be used to check the field conditions.
 	 *
 	 * @param {string} handle - The unique handle of the form field to update.
 	 * @param {string} newValue - The new value to assign to the matched form field.

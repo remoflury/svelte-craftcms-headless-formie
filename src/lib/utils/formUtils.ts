@@ -154,10 +154,10 @@ export const checkValidity = (
 /**
  * @function isValidJSON
  * @description
- * checks if a string is valid json format
+ * function which validates if a string can be parsed to valid JSON
  *
- * @param input
- * @returns boolean
+ * @param { string } input - the input string to test for
+ * @returns { boolean }
  */
 export const isValidJSON = (input: string | undefined | null): boolean => {
 	if (!input) return false;

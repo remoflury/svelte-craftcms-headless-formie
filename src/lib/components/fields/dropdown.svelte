@@ -11,9 +11,10 @@
 	type Props = {
 		item: FieldProps;
 		formStore: FormStore;
+		updateFormFields: (handle: string, newValue: string) => void;
 	};
 
-	let { item, formStore }: Props = $props();
+	let { item, formStore, updateFormFields }: Props = $props();
 
 	const field = $derived(item?.displayName == 'Dropdown' ? item : null);
 	const error = $derived(formStore.getErrorByHandle(field?.handle));
@@ -41,5 +42,5 @@
 		<FieldError {error} />
 	</div>
 {:else if field && typeof nativeOptions === 'object'}
-	<NonNativeDropdwon {field} {error} {nativeOptions} />
+	<NonNativeDropdwon {field} {error} {nativeOptions} {updateFormFields} />
 {/if}

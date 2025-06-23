@@ -10,6 +10,7 @@ import FormDataJson from 'form-data-json-convert';
 import { flatMap, isPlainObject } from 'lodash-es';
 import type { FormieFetchDataProps } from '$lib/types/FormTypes.js';
 import type { FieldProps } from '$lib/types/FieldTypes.js';
+import { isValidJSON } from './formUtils.js';
 // import { base64 } from '@sveu/browser';
 
 export const getFormFieldMeta = (form: FormieFetchDataProps['form']) => {
@@ -82,7 +83,6 @@ export const getMutationVariables = async (
 	el: HTMLFormElement | undefined
 ) => {
 	const formData = new FormData(el);
-	console.log(formData);
 	const object = FormDataJson.toJson(el);
 	const mutationTypes = getFormFieldMeta(form);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -190,8 +190,7 @@ export const getMutationVariables = async (
 				value = Object.values(value);
 			}
 
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			value = value.map((item: any) => {
+			value = value.map((item: string) => {
 				return parseInt(item, 10);
 			});
 			object[info.handle] = value;
@@ -202,13 +201,12 @@ export const getMutationVariables = async (
 			if (isPlainObject(value)) {
 				value = Object.values(value);
 			}
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			value = value.map((item: any) => {
+			value = value.map((item: string) => {
 				return Number(item);
 			});
-			object[info.handle] = value;
+			object[info.handle] = isValidJSON(value) ? JSON.parse(value) : value;
 		} else {
-			object[info.handle] = value;
+			object[info.handle] = isValidJSON(value) ? JSON.parse(value) : value;
 		}
 	}
 

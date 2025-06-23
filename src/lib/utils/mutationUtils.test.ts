@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { allowedFileTypes, getAllowedFileTypes } from './mutationUtils.js';
+import { isValidJSON } from './formUtils.js';
 
 describe('mutationUtils', () => {
 	test.concurrent('getAllowedFileTypes, all', () => {
@@ -32,5 +33,12 @@ describe('mutationUtils', () => {
 		// multiple
 		const multiple = getAllowedFileTypes([allowedFileTypes.video.key, allowedFileTypes.json.key]);
 		expect(multiple).toEqual(`${allowedFileTypes.video.result}, ${allowedFileTypes.json.result}`);
+	});
+	test.concurrent('isValidJson', () => {
+		const nonJson = 'teststring';
+		const json = JSON.stringify(['string 1', 'string 2']);
+
+		expect(isValidJSON(nonJson)).toEqual(false);
+		expect(isValidJSON(json)).toEqual(true);
 	});
 });

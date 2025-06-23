@@ -10,13 +10,15 @@
 		field: DropdownFieldProps;
 		error: string | undefined;
 		nativeOptions: DropdownOption['showNative'];
+		updateFormFields: (handle: string, newValue: string) => void;
 	};
 
-	let { field, error, nativeOptions }: Props = $props();
+	let { field, error, nativeOptions, updateFormFields }: Props = $props();
 
 	let open = $state(false);
 	let btnEl: HTMLButtonElement | undefined = $state(undefined);
-	let selectedOption: DropdownFieldProps['options'][number] | undefined = $state(undefined);
+	let selectedOptions: DropdownFieldProps['options'] = $state([]);
+	let parsedSelectedOptions = $derived(JSON.stringify(selectedOptions.map((o) => o.value)));
 
 	/**
 	 * ========================
@@ -25,7 +27,6 @@
 	 */
 
 	const toggle = () => (open = !open);
-
 	/**
 	 * @function handleKeyPress
 	 * @description
@@ -68,22 +69,31 @@
 	 * @returns void
 	 */
 	const setSelectedOption = (option: DropdownFieldProps['options'][number] | undefined) => {
-		if (option?.disabled) return;
-		selectedOption = option;
-		toggle();
+		if (option?.disabled || !option) return;
+		if (field.multi) {
+			const index = selectedOptions.findIndex((opt) => opt.value === option?.value);
+			if (index < 0) {
+				selectedOptions.push(option);
+			} else {
+				selectedOptions.splice(index, 1);
+			}
+		} else {
+			selectedOptions = option ? [option] : [];
+			toggle();
+		}
+
+		updateFormFields(field.handle, parsedSelectedOptions);
 	};
 
 	onMount(() => {
 		// set preselected if one is available
-		selectedOption = field.options.find((o) => o.isDefault === true) || field.options[0];
+		selectedOptions = [field.options.find((o) => o.isDefault === true) || field.options[0]];
 	});
 
 	/**
 	 * TODO:
 	 * - scroll list for too long lists (with prop max height?)
-	 * - allow multiple
 	 */
-	// $inspect(field);
 </script>
 
 <svelte:window onkeydown={handleEsc} />
@@ -92,15 +102,15 @@
 		<Label required={field.required} for={field.handle}>{field.label}</Label>
 
 		<div use:clickOutside onclickoutside={() => (open = false)} data-formie-field-dropdown-wrapper>
-			{#if selectedOption}
-				<input name={field.handle} hidden bind:value={selectedOption.value} />
+			{#if selectedOptions.length}
+				<input name={field.handle} hidden bind:value={parsedSelectedOptions} />
+				<!-- <input name={field.handle} type="hidden" hidden value="['opt1','option 2']" /> -->
 			{/if}
 
 			<button
 				role="combobox"
 				name={field.handle}
 				id={field.handle}
-				value="Select"
 				aria-invalid={!!error}
 				aria-errormessage={error}
 				aria-controls="listbox-{field.handle}"
@@ -112,10 +122,10 @@
 				onkeydown={handleKeyPress}
 				bind:this={btnEl}
 			>
-				{#if !selectedOption}
+				{#if !selectedOptions.length}
 					{field.options[0].label}
 				{:else}
-					{selectedOption.label}
+					{selectedOptions[0].label}
 				{/if}
 
 				{#if nativeOptions.buttonIcon}
@@ -128,7 +138,7 @@
 			{#if open}
 				<ul role="listbox" id="listbox-{field.handle}">
 					{#each field.options as option (option.value)}
-						{@const isSelected = option.value === selectedOption?.value}
+						{@const isSelected = selectedOptions.some((o) => o.value === option.value)}
 						<li
 							role="option"
 							value={option.value}
