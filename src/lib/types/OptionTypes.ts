@@ -57,6 +57,8 @@ export type DropdownOption = {
 		| {
 				buttonIcon?: Component;
 				selectedIcon?: Component;
+				// maxHeight?:  Unit<"%" | "Q" |"cm" | "em" | "in" | "mm" | "pc" | "pt" |"px" | "rem" | "vh" | "vmax" | "vmin" | "vw">; // max height
+				maxHeight?: `${string}${'%' | 'Q' | 'cm' | 'em' | 'in' | 'mm' | 'pc' | 'pt' | 'px' | 'rem' | 'vh' | 'vmax' | 'vmin' | 'vw'}`; // max height
 		  }
 		| true; // if not defined or true, the native browser element will be rendered
 };

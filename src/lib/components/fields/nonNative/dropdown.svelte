@@ -98,7 +98,11 @@
 
 <svelte:window onkeydown={handleEsc} />
 {#if typeof nativeOptions === 'object'}
-	<div data-formie-field-dropdown class={field.cssClasses ?? ''}>
+	<div
+		data-formie-field-dropdown
+		class={field.cssClasses ?? ''}
+		style={nativeOptions.maxHeight ? `--maxheight: ${nativeOptions.maxHeight};` : undefined}
+	>
 		<Label required={field.required} for={field.handle}>{field.label}</Label>
 
 		<div use:clickOutside onclickoutside={() => (open = false)} data-formie-field-dropdown-wrapper>
@@ -136,7 +140,7 @@
 				{/if}
 			</button>
 			{#if open}
-				<ul role="listbox" id="listbox-{field.handle}">
+				<ul role="listbox" id="listbox-{field.handle}" class:max-height={nativeOptions.maxHeight}>
 					{#each field.options as option (option.value)}
 						{@const isSelected = selectedOptions.some((o) => o.value === option.value)}
 						<li
@@ -193,6 +197,10 @@
 		margin: 0;
 		font: inherit;
 		background-color: inherit;
+	}
+	ul[role='listbox'].max-height {
+		max-height: var(--maxheight);
+		overflow-y: scroll;
 	}
 
 	li {

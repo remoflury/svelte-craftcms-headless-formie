@@ -25,6 +25,7 @@
 				showNative: {
 					buttonIcon: CrossIcon,
 					selectedIcon: CrossIcon
+					// maxHeight: '40px'
 				}
 			}
 		}
