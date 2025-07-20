@@ -20,14 +20,14 @@
 						buttonClass: 'testclass'
 					}
 				}
-			},
-			dropdown: {
-				showNative: {
-					buttonIcon: CrossIcon,
-					selectedIcon: CrossIcon
-					// maxHeight: '40px'
-				}
 			}
+			// dropdown: {
+			// 	showNative: {
+			// 		buttonIcon: CrossIcon,
+			// 		selectedIcon: CrossIcon
+			// 		// maxHeight: '40px'
+			// 	}
+			// }
 		}
 	};
 </script>
@@ -35,7 +35,7 @@
 <section>
 	<FormieForm
 		{options}
-		handle="select"
+		handle="testformular"
 		publicCmsApi="https://craft-test.ddev.site/api"
 		onaftersubmit={(e) => console.log(e)}
 		bind:isLoading

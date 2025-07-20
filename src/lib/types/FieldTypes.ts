@@ -48,7 +48,7 @@ export type BaseFormFieldProps<T extends string> = {
 	visibility: string | null;
 };
 
-export type HiddenFieldProps = BaseFormFieldProps<'HiddenField'> & {
+export type HiddenFieldProps = BaseFormFieldProps<'Hidden'> & {
 	defaultValue: string | null;
 	defaultOption: string | null;
 	queryParameter: string | null;
